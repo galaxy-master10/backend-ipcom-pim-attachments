@@ -1,0 +1,6 @@
+@dotnet_ipcom_pim_attachments_HostAddress = http://localhost:5142
+
+GET {{dotnet_ipcom_pim_attachments_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
