@@ -38,14 +38,17 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 // all validators 
 
 builder.Services.AddScoped<AttachmentFilterValidator>();
+builder.Services.AddScoped<ProductFilterValidator>();
 
 // all repositories
 
 builder.Services.AddScoped<IAttachmentRepository, AttachmentRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // all services
 
 builder.Services.AddScoped<IAttachmetService, AttachmentService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddDbContext<PimDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -105,6 +108,41 @@ attachmentsGroup.MapGet("/{id}", async (Guid id, IAttachmetService attachmentSer
     .WithName("GetAttachmentById")
     .WithOpenApi()
     .Produces<Attachment>(200);
+
+
+
+//--------------------------------------------------------
+// Products api endpoints
+//--------------------------------------------------------
+
+var productsGroup = app.MapGroup("/api/products")
+    .WithTags("Products")
+    .WithDescription("Endpoints for managing products");
+
+productsGroup.MapGet("", async (
+    [AsParameters] ProductFilterDTO filter,
+    [AsParameters] PaginationParameters pagination,
+    IProductService productService) =>
+{
+    var pageNumber = pagination.PageNumber <= 0 ? 1 : pagination.PageNumber;
+    var pageSize = pagination.PageSize <= 0 ? 10 : pagination.PageSize;
+
+    var result = await productService.GetProductsAsync(filter, pageNumber, pageSize);
+    if (result.Data.Count == 0)
+        return Results.NotFound("No products found matching the specified criteria.");
+    return Results.Ok(result);
+});
+
+productsGroup.MapGet("/{id}", async (Guid id, IProductService productService) =>
+{
+    var product = await productService.GetProductByIdAsync(id);
+    if (product == null)
+        return Results.NotFound("Product not found.");
+    return Results.Ok(product);
+}); 
+
+
+
 
 
 
