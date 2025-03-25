@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "Wx0FoGIjcYfwAHCIfh66lRyHIalvow5QxJbNRHnaWAE=",
+  "Source": "dotnet-ipcom-pim-api",
+  "BasePath": "_content/dotnet-ipcom-pim-api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

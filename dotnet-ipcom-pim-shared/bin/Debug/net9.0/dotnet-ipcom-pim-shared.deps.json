@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "dotnet-ipcom-pim-shared/1.0.0": {
+        "runtime": {
+          "dotnet-ipcom-pim-shared.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "dotnet-ipcom-pim-shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

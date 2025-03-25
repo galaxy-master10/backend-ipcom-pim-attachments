@@ -1,0 +1,12 @@
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\bin\Debug\net9.0\dotnet-ipcom-pim-shared.deps.json
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\bin\Debug\net9.0\dotnet-ipcom-pim-shared.dll
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\bin\Debug\net9.0\dotnet-ipcom-pim-shared.pdb
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\obj\Debug\net9.0\dotnet-ipcom-pim-shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\obj\Debug\net9.0\dotnet-ipcom-pim-shared.AssemblyInfoInputs.cache
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\obj\Debug\net9.0\dotnet-ipcom-pim-shared.AssemblyInfo.cs
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\obj\Debug\net9.0\dotnet-ipcom-pim-shared.csproj.CoreCompileInputs.cache
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\obj\Debug\net9.0\dotnet-ipcom-pim-shared.sourcelink.json
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\obj\Debug\net9.0\dotnet-ipcom-pim-shared.dll
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\obj\Debug\net9.0\refint\dotnet-ipcom-pim-shared.dll
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\obj\Debug\net9.0\dotnet-ipcom-pim-shared.pdb
+C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-shared\obj\Debug\net9.0\ref\dotnet-ipcom-pim-shared.dll
