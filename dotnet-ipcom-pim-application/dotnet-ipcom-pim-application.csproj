@@ -8,7 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
+      <ProjectReference Include="..\dotnet-ipcom-pim-domain\dotnet-ipcom-pim-domain.csproj" />
+      <ProjectReference Include="..\dotnet-ipcom-pim-shared\dotnet-ipcom-pim-shared.csproj" />
     </ItemGroup>
 
 </Project>

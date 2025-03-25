@@ -28,7 +28,7 @@ public partial class PimDbContext : DbContext
                 .HasMaxLength(2)
                 .IsUnicode(false)
                 .IsFixedLength();
-            entity.Property(e => e.Md5).HasColumnName("MD5");
+         //   entity.Property(e => e.Md5).HasColumnName("MD5");
         });
 
         modelBuilder.Entity<Product>(entity =>
