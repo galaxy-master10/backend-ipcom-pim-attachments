@@ -21,7 +21,7 @@ public class AttachmentRepository : IAttachmentRepository
             .Include(a=>a.Products)
            .FirstOrDefaultAsync(a => a.Id == id);
     }
-    public async Task<(List<Attachment> Attachments, int TotalCount)> GetAttachmentsAsync(
+    public async Task<(List<Attachment> Attachments, int TotalCount, int ExpiringWithin7Days, int ExpiringWithin30Days)> GetAttachmentsAsync(
         AttachmentFilterDTO filter, int page = 1, int pageSize = 10)
     {
         page = page <= 0 ? 1 : page;
@@ -82,13 +82,30 @@ public class AttachmentRepository : IAttachmentRepository
         
         var totalCount = await query.CountAsync();
         
+        // Calculate expiring attachments counts
+        var today = DateTime.Today;
+        var sevenDaysFromNow = today.AddDays(7);
+        var thirtyDaysFromNow = today.AddDays(30);
+
+        var expiringWithin7Days = await _context.Attachments
+            .Where(a => a.ExpiryDate.HasValue &&
+                        a.ExpiryDate.Value >= DateOnly.FromDateTime(today) &&
+                        a.ExpiryDate.Value <= DateOnly.FromDateTime(sevenDaysFromNow))
+            .CountAsync<Attachment>();
+
+        var expiringWithin30Days = await _context.Attachments
+            .Where(a => a.ExpiryDate.HasValue &&
+                        a.ExpiryDate.Value >= DateOnly.FromDateTime(today) &&
+                        a.ExpiryDate.Value <= DateOnly.FromDateTime(thirtyDaysFromNow))
+            .CountAsync<Attachment>();
+        
         var attachments = await query
             .OrderByDescending(a => a.ExpiryDate)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        return (attachments, totalCount);
+        return (attachments, totalCount, expiringWithin7Days, expiringWithin30Days);
     }
 
     

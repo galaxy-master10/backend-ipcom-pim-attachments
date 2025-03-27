@@ -34,8 +34,14 @@ public class AttachmentService : IAttachmetService
         pageSize = Math.Max(1, Math.Min(pageSize, 100));
         
         _attachmentFilterValidator.Validate(attachmentFilterDto);
-        var (attachments, totalCount) = await _attachmentRepository.GetAttachmentsAsync(attachmentFilterDto, page, pageSize);
-        
-        return new PaginatedResponse<Attachment>(attachments, page, pageSize, totalCount);
-    }
+        var (attachments, totalCount, expiringWithin7Days, expiringWithin30Days) = 
+            await _attachmentRepository.GetAttachmentsAsync(attachmentFilterDto, page, pageSize);
+
+        return new PaginatedResponse<Attachment>(
+            attachments, 
+            page, 
+            pageSize, 
+            totalCount, 
+            expiringWithin7Days, 
+            expiringWithin30Days);    }
 }
