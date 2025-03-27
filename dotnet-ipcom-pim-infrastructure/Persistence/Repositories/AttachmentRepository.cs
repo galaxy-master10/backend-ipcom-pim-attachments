@@ -30,6 +30,11 @@ public class AttachmentRepository : IAttachmentRepository
         var query = _context.Attachments
             .Include(a => a.Products)
             .AsQueryable();
+        
+        if (filter.Id.HasValue)
+        {
+            query = query.Where(a => a.Id == filter.Id);
+        }
 
         if (!string.IsNullOrWhiteSpace(filter.Name))
         {

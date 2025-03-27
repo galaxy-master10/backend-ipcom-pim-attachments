@@ -36,6 +36,6 @@ public class AttachmentService : IAttachmetService
         _attachmentFilterValidator.Validate(attachmentFilterDto);
         var (attachments, totalCount) = await _attachmentRepository.GetAttachmentsAsync(attachmentFilterDto, page, pageSize);
         
-        return new PaginatedResponse<Attachment>(attachments, totalCount, page, pageSize);
+        return new PaginatedResponse<Attachment>(attachments, page, pageSize, totalCount);
     }
 }

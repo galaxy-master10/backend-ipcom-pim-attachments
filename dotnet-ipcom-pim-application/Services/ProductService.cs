@@ -36,6 +36,6 @@ public class ProductService : IProductService
         _productFilterValidator.Validate(productFilterDto);
         var (products, totalCount) = await _productRepository.GetProductsAsync(productFilterDto, page, pageSize);
         
-        return new PaginatedResponse<Product>(products, totalCount, page, pageSize);
+        return new PaginatedResponse<Product>(products, page, pageSize, totalCount);
     }
 }

@@ -53,6 +53,17 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddDbContext<PimDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueApp", builder =>
+    {
+        builder.WithOrigins("http://localhost:5173") // Your Vue app's address
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 
 var app = builder.Build();
 
@@ -66,6 +77,9 @@ if (app.Environment.IsDevelopment())
         s.RoutePrefix = string.Empty;
     });
 }
+
+// Enable CORS
+app.UseCors("AllowVueApp");
 
 app.UseHttpsRedirection();
 
@@ -89,7 +103,7 @@ attachmentsGroup.MapGet("", async (
     
         var result = await attachmentService.GetAttachmentsAsync(filter, pageNumber, pageSize);
         if (result.Data.Count == 0)
-            return Results.NotFound("No attachments found matching the specified criteria.");
+            return Results.Ok(result);
         return Results.Ok(result);
     })
     .WithName("GetAttachments")
@@ -137,7 +151,7 @@ productsGroup.MapGet("/{id}", async (Guid id, IProductService productService) =>
 {
     var product = await productService.GetProductByIdAsync(id);
     if (product == null)
-        return Results.NotFound("Product not found.");
+        return Results.Ok(product);
     return Results.Ok(product);
 }); 
 
