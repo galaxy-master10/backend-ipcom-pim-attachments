@@ -107,6 +107,18 @@ public class AttachmentRepository : IAttachmentRepository
 
         return (attachments, totalCount, expiringWithin7Days, expiringWithin30Days);
     }
+// add a method for getting all attachments at once with no parameter 
 
+    public async Task<List<Attachment>> GetAttachmentsForConsoleAppAsync()
+    {
+        var query = _context.Attachments
+            .Include(a => a.Products)
+            .AsQueryable();
+
+        var attachments = await query
+            .ToListAsync();
+
+        return attachments;
+    }
     
 }

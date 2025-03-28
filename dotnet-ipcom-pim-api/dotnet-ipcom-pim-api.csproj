@@ -21,4 +21,10 @@
       <ProjectReference Include="..\dotnet-ipcom-pim-infrastructure\dotnet-ipcom-pim-infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="appsettings.json">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

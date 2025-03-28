@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-ipcom-pim-infrastruc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-ipcom-pim-shared", "dotnet-ipcom-pim-shared\dotnet-ipcom-pim-shared.csproj", "{1FB2A953-AE47-4391-82BF-C688D7EA7399}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-ipcom-pim-console", "dotnet-ipcom-pim-console\dotnet-ipcom-pim-console.csproj", "{79D04205-D294-4BFE-85CF-6D83E473206B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{1FB2A953-AE47-4391-82BF-C688D7EA7399}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FB2A953-AE47-4391-82BF-C688D7EA7399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FB2A953-AE47-4391-82BF-C688D7EA7399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D04205-D294-4BFE-85CF-6D83E473206B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D04205-D294-4BFE-85CF-6D83E473206B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D04205-D294-4BFE-85CF-6D83E473206B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D04205-D294-4BFE-85CF-6D83E473206B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
