@@ -1,5 +1,4 @@
 C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-api\bin\Debug\net9.0\appsettings.Development.json
-C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-api\bin\Debug\net9.0\appsettings.json
 C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-api\bin\Debug\net9.0\dotnet-ipcom-pim-api.staticwebassets.endpoints.json
 C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-api\bin\Debug\net9.0\dotnet-ipcom-pim-api.exe
 C:\Users\SayidaliJama\projects\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-attachments\dotnet-ipcom-pim-api\bin\Debug\net9.0\dotnet-ipcom-pim-api.deps.json
