@@ -1,5 +1,6 @@
 ﻿using dotnet_ipcom_pim_application.Interfaces;
 using dotnet_ipcom_pim_application.Validators.Filters;
+using dotnet_ipcom_pim_domain.DTOs.Custom;
 using dotnet_ipcom_pim_domain.DTOs.Filters;
 using dotnet_ipcom_pim_domain.Entities;
 using dotnet_ipcom_pim_domain.Interfaces;
@@ -28,7 +29,7 @@ public class AttachmentService : IAttachmetService
         return await _attachmentRepository.GetAttachmentByIdAsync(id);
     }
 
-    public async Task<PaginatedResponse<Attachment>> GetAttachmentsAsync(AttachmentFilterDTO attachmentFilterDto, int page = 1, int pageSize = 10)
+    public async Task<PaginatedResponse<AttachmentSimpleDTO>> GetAttachmentsAsync(AttachmentFilterDTO attachmentFilterDto, int page = 1, int pageSize = 10)
     {
         page = Math.Max(1, page);
         pageSize = Math.Max(1, Math.Min(pageSize, 100));
@@ -37,7 +38,7 @@ public class AttachmentService : IAttachmetService
         var (attachments, totalCount, expiringWithin7Days, expiringWithin30Days) = 
             await _attachmentRepository.GetAttachmentsAsync(attachmentFilterDto, page, pageSize);
 
-        return new PaginatedResponse<Attachment>(
+        return new PaginatedResponse<AttachmentSimpleDTO>(
             attachments, 
             page, 
             pageSize, 
