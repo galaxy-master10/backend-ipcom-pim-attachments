@@ -22,7 +22,7 @@ public class AttachmentRepository : IAttachmentRepository
             .Include(a=>a.Products)
            .FirstOrDefaultAsync(a => a.Id == id);
     }
-    public async Task<(List<Attachment> Attachments, int TotalCount, int ExpiringWithin7Days, int ExpiringWithin30Days)> GetAttachmentsAsync(
+    public async Task<(List<AttachmentSimpleDTO> Attachments, int TotalCount, int ExpiringWithin7Days, int ExpiringWithin30Days)> GetAttachmentsAsync(
         AttachmentFilterDTO filter, int page = 1, int pageSize = 10)
     {
         page = page <= 0 ? 1 : page;
@@ -105,33 +105,37 @@ public class AttachmentRepository : IAttachmentRepository
             .OrderByDescending(a => a.ExpiryDate)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
+            .Select(a => new AttachmentSimpleDTO
+            {
+                Id = a.Id,
+                Name = a.Name,
+                LanguageCode = a.LanguageCode,
+                Published = a.Published,
+                Index = a.Index,
+                NoResize = a.NoResize,
+                Size = a.Size,
+                ExpiryDate = a.ExpiryDate,
+                Products = a.Products.Select(p => new ProductSimpleDTO
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                }).ToList(),
+                CategoryNames = a.AttachmentCategories.Select(ac =>
+                    // For each category, choose a translation for "Name" matching the attachment's language,
+                    // otherwise take the first available translation.
+                    ac.Translations
+                        .Where(t => t.Property == "Name" && t.LanguageCode == a.LanguageCode)
+                        .Select(t => t.LanguageTranslation)
+                        .FirstOrDefault()
+                    ?? ac.Translations
+                        .Where(t => t.Property == "Name")
+                        .Select(t => t.LanguageTranslation)
+                        .FirstOrDefault()
+                ).Where(name => name != null).ToList()!
+            })
             .ToListAsync();
         
-        foreach (var attachment in attachments)
-        {
-            var categoryNames = new List<string>();
-            foreach (var category in attachment.AttachmentCategories)
-            {
-                // Try to get the translation where:
-                // - The translation property is "Name"
-                // - The language matches the attachment's language code
-                var catName = category.Translations
-                                  .Where(t => t.Property == "Name" && t.LanguageCode == attachment.LanguageCode)
-                                  .Select(t => t.LanguageTranslation)
-                                  .FirstOrDefault()
-                              // Fallback: if no match, take the first available translation for "Name"
-                              ?? category.Translations
-                                  .Where(t => t.Property == "Name")
-                                  .Select(t => t.LanguageTranslation)
-                                  .FirstOrDefault();
 
-                if (!string.IsNullOrEmpty(catName))
-                {
-                    categoryNames.Add(catName);
-                }
-            }
-            attachment.CategoryNames = categoryNames;
-        }
 
         
         return (attachments, totalCount, expiringWithin7Days, expiringWithin30Days);
