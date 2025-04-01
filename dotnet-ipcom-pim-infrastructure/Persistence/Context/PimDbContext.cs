@@ -15,6 +15,7 @@ public partial class PimDbContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Latin1_General_CI_AS");
@@ -29,8 +30,78 @@ public partial class PimDbContext : DbContext
                 .IsUnicode(false)
                 .IsFixedLength();
          //   entity.Property(e => e.Md5).HasColumnName("MD5");
+         
+         entity
+             .HasMany(a => a.AttachmentCategories)
+             .WithMany(c => c.Attachments)
+             .UsingEntity<Dictionary<string, object>>(
+                 "AttachmentsXAttachmentCategories",
+                 r => r
+                     .HasOne<AttachmentCategory>()
+                     .WithMany()
+                     .HasForeignKey("AttachmentCategory_Id")
+                     .HasConstraintName("FK_AttachmentsXAttachmentCategories_AttachmentCategory")
+                     .OnDelete(DeleteBehavior.Cascade),
+                 l => l
+                     .HasOne<Attachment>()
+                     .WithMany()
+                     .HasForeignKey("Attachment_Id")
+                     .HasConstraintName("FK_AttachmentsXAttachmentCategories_Attachment"),
+                 j =>
+                 {
+                     j.HasKey("Attachment_Id", "AttachmentCategory_Id");
+                     j.ToTable("AttachmentsXAttachmentCategories");
+                 }
+             );
+         
         });
 
+       
+        modelBuilder.Entity<AttachmentCategory>(entity =>
+        {
+            entity.ToTable("AttachmentCategories");
+
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            // Relationship to Translations
+            // We will rely on a condition that "TranslatableId" matches the category's Id
+            // and possibly also "Property = 'Name'". 
+            // Because your schema is used for many translatable entities,
+            // we can do a filtered Include or a condition in queries.
+
+            // If you want a direct relationship, you can do:
+            entity
+                .HasMany(ac => ac.Translations)
+                .WithOne(t => t.AttachmentCategory!)
+                .HasForeignKey(t => t.TranslatableId)
+                .HasConstraintName("FK_Translations_AttachmentCategories")
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            // (We typically also store which 'Property' the translation is for.)
+        });
+      
+        modelBuilder.Entity<Translation>(entity =>
+        {
+            entity.ToTable("Translations");
+
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.LanguageCode)
+                .HasMaxLength(2)
+                .IsFixedLength();
+            entity.Property(e => e.Property)
+                .HasMaxLength(50);
+
+            // We already set up the relationship in AttachmentCategory
+            // so the fluent config can be done there or here. 
+            // If you do it here:
+            //
+            // entity
+            //     .HasOne(t => t.AttachmentCategory)
+            //     .WithMany(ac => ac.Translations)
+            //     .HasForeignKey(t => t.TranslatableId);
+        });
+        
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Products__3214EC07AFDC2938");
@@ -65,3 +136,5 @@ public partial class PimDbContext : DbContext
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
+
+

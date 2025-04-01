@@ -15,4 +15,7 @@ public class AttachmentFilterDTO
     public Guid? ProductId { get; set; }
     public int? Index { get; set; }
     
+    public Guid? CategoryId { get; set; }
+    public string? CategoryName { get; set; }
+    
 }
