@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dotnet_ipcom_pim_domain.Entities;
 
@@ -26,4 +27,14 @@ public partial class Attachment
     public DateOnly? ExpiryDate { get; set; }
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+    
+    
+    [NotMapped]
+    public List<string> CategoryNames { get; set; } = new List<string>();
+    public virtual ICollection<AttachmentCategory> AttachmentCategories { get; set; }
+        = new List<AttachmentCategory>();
+    
+
+    
+
 }

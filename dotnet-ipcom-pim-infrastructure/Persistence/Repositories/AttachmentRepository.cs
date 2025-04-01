@@ -1,4 +1,5 @@
-﻿using dotnet_ipcom_pim_domain.DTOs.Filters;
+﻿using dotnet_ipcom_pim_domain.DTOs.Custom;
+using dotnet_ipcom_pim_domain.DTOs.Filters;
 using dotnet_ipcom_pim_domain.Entities;
 using dotnet_ipcom_pim_domain.Interfaces;
 using dotnet_ipcom_pim_infrastructure.Persistence.Context;
@@ -29,6 +30,9 @@ public class AttachmentRepository : IAttachmentRepository
 
         var query = _context.Attachments
             .Include(a => a.Products)
+            .Include(a => a.AttachmentCategories)
+            .ThenInclude(ac => ac.Translations)
+            .AsSplitQuery()
             .AsQueryable();
         
         if (filter.Id.HasValue)
@@ -66,8 +70,6 @@ public class AttachmentRepository : IAttachmentRepository
             query = query.Where(a => a.Index == filter.Index);
         }
 
-      
-
         if (filter.ExpiryDateFrom.HasValue)
         {
             var from = filter.ExpiryDateFrom.Value;
@@ -104,11 +106,37 @@ public class AttachmentRepository : IAttachmentRepository
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+        
+        foreach (var attachment in attachments)
+        {
+            var categoryNames = new List<string>();
+            foreach (var category in attachment.AttachmentCategories)
+            {
+                // Try to get the translation where:
+                // - The translation property is "Name"
+                // - The language matches the attachment's language code
+                var catName = category.Translations
+                                  .Where(t => t.Property == "Name" && t.LanguageCode == attachment.LanguageCode)
+                                  .Select(t => t.LanguageTranslation)
+                                  .FirstOrDefault()
+                              // Fallback: if no match, take the first available translation for "Name"
+                              ?? category.Translations
+                                  .Where(t => t.Property == "Name")
+                                  .Select(t => t.LanguageTranslation)
+                                  .FirstOrDefault();
 
+                if (!string.IsNullOrEmpty(catName))
+                {
+                    categoryNames.Add(catName);
+                }
+            }
+            attachment.CategoryNames = categoryNames;
+        }
+
+        
         return (attachments, totalCount, expiringWithin7Days, expiringWithin30Days);
     }
-// add a method for getting all attachments at once with no parameter 
-
+    
     public async Task<List<Attachment>> GetAttachmentsForConsoleAppAsync()
     {
         var query = _context.Attachments
@@ -117,8 +145,49 @@ public class AttachmentRepository : IAttachmentRepository
 
         var attachments = await query
             .ToListAsync();
+      
 
         return attachments;
     }
+    
+    public async Task<List<Attachment>> GetAttachmentsWithCategoryNamesAsync()
+    {
+        // Load attachments with their categories and the categories' translations.
+        var attachments = await _context.Attachments
+            .Include(a => a.AttachmentCategories)
+            .ThenInclude(ac => ac.Translations)
+            .ToListAsync();
+    
+        // Populate the non-mapped CategoryNames property on each attachment.
+        foreach (var attachment in attachments)
+        {
+            var categoryNames = new List<string>();
+            foreach (var category in attachment.AttachmentCategories)
+            {
+                // Attempt to get the translation where the property is "Name" and the language matches the attachment's language.
+                var catName = category.Translations
+                                  .Where(t => t.Property == "Name" && t.LanguageCode == attachment.LanguageCode)
+                                  .Select(t => t.LanguageTranslation)
+                                  .FirstOrDefault()
+                              // Fallback: if no match, take the first available translation for "Name".
+                              ?? category.Translations
+                                  .Where(t => t.Property == "Name")
+                                  .Select(t => t.LanguageTranslation)
+                                  .FirstOrDefault();
+    
+                if (!string.IsNullOrEmpty(catName))
+                {
+                    categoryNames.Add(catName);
+                }
+            }
+    
+            attachment.CategoryNames = categoryNames;
+        }
+    
+        return attachments;
+    }
+
+
+
     
 }
