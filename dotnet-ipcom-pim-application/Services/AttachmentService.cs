@@ -29,7 +29,7 @@ public class AttachmentService : IAttachmetService
         return await _attachmentRepository.GetAttachmentByIdAsync(id);
     }
 
-    public async Task<PaginatedResponse<AttachmentSimpleDTO>> GetAttachmentsAsync(AttachmentFilterDTO attachmentFilterDto, int page = 1, int pageSize = 10)
+    public async Task<PaginatedResponse<AttachmentDTO>> GetAttachmentsAsync(AttachmentFilterDTO attachmentFilterDto, int page = 1, int pageSize = 10)
     {
         page = Math.Max(1, page);
         pageSize = Math.Max(1, Math.Min(pageSize, 100));
@@ -38,7 +38,7 @@ public class AttachmentService : IAttachmetService
         var (attachments, totalCount, expiringWithin7Days, expiringWithin30Days) = 
             await _attachmentRepository.GetAttachmentsAsync(attachmentFilterDto, page, pageSize);
 
-        return new PaginatedResponse<AttachmentSimpleDTO>(
+        return new PaginatedResponse<AttachmentDTO>(
             attachments, 
             page, 
             pageSize, 

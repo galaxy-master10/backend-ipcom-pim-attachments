@@ -1,6 +1,6 @@
 ﻿namespace dotnet_ipcom_pim_domain.DTOs.Custom;
 
-public class AttachmentSimpleDTO
+public class AttachmentDTO
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;
@@ -10,6 +10,6 @@ public class AttachmentSimpleDTO
     public bool NoResize { get; set; }
     public long Size { get; set; }
     public DateOnly? ExpiryDate { get; set; }
-    public List<ProductSimpleDTO> Products { get; set; } = new();
+    public List<ProductDTO> Products { get; set; } = new();
     public List<string> CategoryNames { get; set; } = new();
 }
