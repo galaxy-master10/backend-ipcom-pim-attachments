@@ -1,4 +1,5 @@
-﻿using dotnet_ipcom_pim_domain.Entities;
+﻿using dotnet_ipcom_pim_domain.DTOs.Custom;
+using dotnet_ipcom_pim_domain.Entities;
 using dotnet_ipcom_pim_domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -94,10 +95,10 @@ namespace dotnet_ipcom_pim_console.Services
         }
 
         private string GenerateEmailBody(
-            List<Attachment> lightOrangeAttachments,
-            List<Attachment> deepOrangeAttachments,
-            List<Attachment> lightRedAttachments,
-            List<Attachment> redAttachments)
+            List<AttachmentDTO> lightOrangeAttachments,
+            List<AttachmentDTO> deepOrangeAttachments,
+            List<AttachmentDTO> lightRedAttachments,
+            List<AttachmentDTO> redAttachments)
         {
             var body = @"
             <!DOCTYPE html>
@@ -128,6 +129,7 @@ namespace dotnet_ipcom_pim_console.Services
                     <tr>
                         <th>Product</th>
                         <th>Attachment Name</th>
+  <th>Category Name</th>
                         <th>Expiry Date</th>
                     </tr>";
 
@@ -137,6 +139,11 @@ namespace dotnet_ipcom_pim_console.Services
                     <tr class='red'>
                           <td>{attachment.Products.FirstOrDefault()?.Name}</td>
                         <td>{attachment.Name}</td>
+<td>
+{
+  attachment.CategoryNames.FirstOrDefault()
+}
+ </td>
                         <td>{attachment.ExpiryDate:yyyy-MM-dd}</td>
                     </tr>";
                 }
@@ -153,6 +160,7 @@ namespace dotnet_ipcom_pim_console.Services
                     <tr>
                         <th>Product</th>
                         <th>Attachment Name</th>
+<th>Category Name</th>
                         <th>Expiry Date</th>
                     </tr>";
 
@@ -163,6 +171,11 @@ namespace dotnet_ipcom_pim_console.Services
                               <td>{attachment.Products.FirstOrDefault()?.Name}</td>
 
                         <td>{attachment.Name}</td>
+<td>
+{
+    attachment.CategoryNames.FirstOrDefault()
+}
+ </td>
                         <td>{attachment.ExpiryDate:yyyy-MM-dd}</td>
                     </tr>";
                 }
@@ -179,6 +192,7 @@ namespace dotnet_ipcom_pim_console.Services
                     <tr>
                         <th>Product</th>
                         <th>Attachment Name</th>
+<th>Category Name</th>
                         <th>Expiry Date</th>
                     </tr>";
 
@@ -188,6 +202,11 @@ namespace dotnet_ipcom_pim_console.Services
                     <tr class='deep-orange'>
         <td>{attachment.Products.FirstOrDefault()?.Name}</td>
                         <td>{attachment.Name}</td>
+<td>
+{
+    attachment.CategoryNames.FirstOrDefault()
+}
+ </td>
                         <td>{attachment.ExpiryDate:yyyy-MM-dd}</td>
                     </tr>";
                 }
@@ -204,6 +223,7 @@ namespace dotnet_ipcom_pim_console.Services
                     <tr>
                         <th>Product</th>
                         <th>Attachment Name</th>
+<th>Category Name</th>
                         <th>Expiry Date</th>
                     </tr>";
 
@@ -213,6 +233,11 @@ namespace dotnet_ipcom_pim_console.Services
                     <tr class='light-orange'>
                         <td>{attachment.Products.Any()}</td>
                         <td>{attachment.Name}</td>
+<td>
+{
+    attachment.CategoryNames.FirstOrDefault()
+}
+ </td>
                         <td>{attachment.ExpiryDate:yyyy-MM-dd}</td>
                     </tr>";
                 }

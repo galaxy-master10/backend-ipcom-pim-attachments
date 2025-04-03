@@ -154,15 +154,47 @@ public class AttachmentRepository : IAttachmentRepository
         return (attachments, totalCount, expiringWithin7Days, expiringWithin30Days);
     }
     
-    public async Task<List<Attachment>> GetAttachmentsForConsoleAppAsync()
+    public async Task<List<AttachmentDTO>> GetAttachmentsForConsoleAppAsync()
     {
         var query = _context.Attachments
             .Include(a => a.Products)
+            .Include(a => a.AttachmentCategories)
+            .ThenInclude(ac => ac.Translations)
+            .AsSplitQuery()
             .AsQueryable();
 
         var attachments = await query
+            .OrderByDescending(a => a.ExpiryDate)
+            .Select(a => new AttachmentDTO
+            {
+                Id = a.Id,
+                Name = a.Name,
+                LanguageCode = a.LanguageCode,
+                Published = a.Published,
+                Index = a.Index,
+                NoResize = a.NoResize,
+                Size = a.Size,
+                ExpiryDate = a.ExpiryDate,
+                Products = a.Products.Select(p => new ProductDTO
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                }).ToList(),
+                CategoryNames = a.AttachmentCategories.Select(ac =>
+                    // For each category, choose a translation for "Name" matching the attachment's language,
+                    // otherwise take the first available translation.
+                    ac.Translations
+                        .Where(t => t.Property == "Name" && t.LanguageCode == a.LanguageCode)
+                        .Select(t => t.LanguageTranslation)
+                        .FirstOrDefault()
+                    ?? ac.Translations
+                        .Where(t => t.Property == "Name")
+                        .Select(t => t.LanguageTranslation)
+                        .FirstOrDefault()
+                ).Where(name => name != null).ToList()!
+            })
             .ToListAsync();
-      
+
 
         return attachments;
     }
