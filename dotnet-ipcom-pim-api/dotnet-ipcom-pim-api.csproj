@@ -30,6 +30,9 @@
       <Content Update="appsettings.json">
         <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
+      <Content Update="appsettings.example.json">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
