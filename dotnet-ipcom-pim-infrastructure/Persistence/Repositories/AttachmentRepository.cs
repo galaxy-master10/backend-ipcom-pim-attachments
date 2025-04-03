@@ -22,7 +22,7 @@ public class AttachmentRepository : IAttachmentRepository
             .Include(a=>a.Products)
            .FirstOrDefaultAsync(a => a.Id == id);
     }
-    public async Task<(List<AttachmentSimpleDTO> Attachments, int TotalCount, int ExpiringWithin7Days, int ExpiringWithin30Days)> GetAttachmentsAsync(
+    public async Task<(List<AttachmentDTO> Attachments, int TotalCount, int ExpiringWithin7Days, int ExpiringWithin30Days)> GetAttachmentsAsync(
         AttachmentFilterDTO filter, int page = 1, int pageSize = 10)
     {
         page = page <= 0 ? 1 : page;
@@ -118,7 +118,7 @@ public class AttachmentRepository : IAttachmentRepository
             .OrderByDescending(a => a.ExpiryDate)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(a => new AttachmentSimpleDTO
+            .Select(a => new AttachmentDTO
             {
                 Id = a.Id,
                 Name = a.Name,
@@ -128,7 +128,7 @@ public class AttachmentRepository : IAttachmentRepository
                 NoResize = a.NoResize,
                 Size = a.Size,
                 ExpiryDate = a.ExpiryDate,
-                Products = a.Products.Select(p => new ProductSimpleDTO
+                Products = a.Products.Select(p => new ProductDTO
                 {
                     Id = p.Id,
                     Name = p.Name

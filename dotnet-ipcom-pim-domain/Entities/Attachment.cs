@@ -9,11 +9,7 @@ public partial class Attachment
     public Guid Id { get; set; }
 
     public string Name { get; set; } = null!;
-
-   // public byte[] Content { get; set; } = null!;
-
-  //  public byte[] Md5 { get; set; } = null!;
-
+    
     public string LanguageCode { get; set; } = null!;
 
     public bool? Published { get; set; }
@@ -33,8 +29,4 @@ public partial class Attachment
     public List<string> CategoryNames { get; set; } = new List<string>();
     public virtual ICollection<AttachmentCategory> AttachmentCategories { get; set; }
         = new List<AttachmentCategory>();
-    
-
-    
-
 }

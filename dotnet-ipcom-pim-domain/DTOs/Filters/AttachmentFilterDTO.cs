@@ -7,8 +7,7 @@ public class AttachmentFilterDTO
     public string? LanguageCode { get; set; }
     public bool? Published { get; set; }
     public bool? NoResize { get; set; }
-
-    // Optional: Date range for expiry
+    
     public DateOnly? ExpiryDateFrom { get; set; }
     public DateOnly? ExpiryDateTo { get; set; }
 
