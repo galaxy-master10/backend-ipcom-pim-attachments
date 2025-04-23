@@ -92,14 +92,6 @@ public partial class PimDbContext : DbContext
             entity.Property(e => e.Property)
                 .HasMaxLength(50);
 
-            // We already set up the relationship in AttachmentCategory
-            // so the fluent config can be done there or here. 
-            // If you do it here:
-            //
-            // entity
-            //     .HasOne(t => t.AttachmentCategory)
-            //     .WithMany(ac => ac.Translations)
-            //     .HasForeignKey(t => t.TranslatableId);
         });
         
         modelBuilder.Entity<Product>(entity =>
