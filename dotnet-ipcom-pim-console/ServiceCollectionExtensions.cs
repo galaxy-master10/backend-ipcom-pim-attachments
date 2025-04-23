@@ -12,6 +12,11 @@ public static class ServiceCollectionExtensions
         // Register console-specific services
         services.AddTransient<IEmailService, EmailService>();
         services.AddTransient<IAttachmentExpiryNotificationService, AttachmentExpiryNotificationService>();
+        
+        services.AddSingleton<IScheduleConfiguration, ScheduleConfiguration>();
+            
+        // Register the worker service as a hosted service
+        services.AddHostedService<AttachmentExpiryWorker>();
             
         return services;
     }

@@ -15,6 +15,10 @@ class Program
     static async Task Main(string[] args)
     {
         var host = Host.CreateDefaultBuilder(args)
+            .UseWindowsService(options =>
+            {
+                options.ServiceName = "IPCOM PIM Attachment Expiry Service";
+            })
             .ConfigureAppConfiguration((hostContext, config) =>
             {
                 config.SetBasePath(Directory.GetCurrentDirectory())
@@ -36,23 +40,54 @@ class Program
                 logging.ClearProviders();
                 logging.AddConsole();
                 logging.AddDebug();
+                
+                logging.AddFile(hostContext.Configuration["Logging:FilePath"] ?? "logs/ipcom-pim.log");
+
             })
             .Build();
 
-        var logger = host.Services.GetRequiredService<ILogger<Program>>();
-        logger.LogInformation("Starting Attachment Expiry Notification Service");
+        if (args.Length > 0 && args[0] == "--console")
+        {
+            var logger = host.Services.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation("Running in console mode");
 
-        try
-        {
-            // Run the notification service
-            var notificationService = host.Services.GetRequiredService<IAttachmentExpiryNotificationService>();
-            await notificationService.SendExpiryNotificationsAsync();
-                
-            logger.LogInformation("Completed sending notifications successfully");
+            try
+            {
+                // Run the notification service directly for testing
+                var notificationService = host.Services.GetRequiredService<IAttachmentExpiryNotificationService>();
+                await notificationService.SendExpiryNotificationsAsync();
+                    
+                logger.LogInformation("Completed sending notifications successfully");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while sending notifications");
+            }
         }
-        catch (Exception ex)
+        else
         {
-            logger.LogError(ex, "An error occurred while sending notifications");
+            // Run as a service
+            await host.RunAsync();
         }
+    
     }
-}
+} 
+/*
+var logger = host.Services.GetRequiredService<ILogger<Program>>();
+         logger.LogInformation("Starting Attachment Expiry Notification Service");
+ 
+         try
+         {
+             // Run the notification service
+             var notificationService = host.Services.GetRequiredService<IAttachmentExpiryNotificationService>();
+             await notificationService.SendExpiryNotificationsAsync();
+                 
+             logger.LogInformation("Completed sending notifications successfully");
+         }
+         catch (Exception ex)
+         {
+             logger.LogError(ex, "An error occurred while sending notifications");
+         }
+         
+         
+         */
