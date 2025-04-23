@@ -55,7 +55,7 @@ public class ApiKeyMiddleware
         {
                 
             context.Response.StatusCode = 500;
-            await context.Response.WriteAsync($"Error validating API key: {ex.Message}");
+            await context.Response.WriteAsync($"{ex.Message}");
         }
     }
 }
