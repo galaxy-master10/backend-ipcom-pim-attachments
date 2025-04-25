@@ -14,6 +14,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
+        ConfigureNetworking();
         var host = Host.CreateDefaultBuilder(args)
             .UseWindowsService(options =>
             {
@@ -21,8 +22,10 @@ class Program
             })
             .ConfigureAppConfiguration((hostContext, config) =>
             {
+                var env = hostContext.HostingEnvironment;
                 config.SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables();
             })
             .ConfigureServices((hostContext, services) =>
@@ -71,23 +74,30 @@ class Program
         }
     
     }
+    
+    private static void ConfigureNetworking()
+    {
+        try
+        {
+            // Log current SecurityProtocol
+            Console.WriteLine($"Current SecurityProtocol: {System.Net.ServicePointManager.SecurityProtocol}");
+        
+            // Force TLS 1.2
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+            Console.WriteLine($"Updated SecurityProtocol: {System.Net.ServicePointManager.SecurityProtocol}");
+        
+            // Test connectivity
+            using (var client = new System.Net.WebClient())
+            {
+                var result = client.DownloadString("https://www.sendgrid.com");
+                Console.WriteLine("Successfully connected to SendGrid website");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Networking test failed: {ex.Message}");
+        }
+    }
 } 
-/*
-var logger = host.Services.GetRequiredService<ILogger<Program>>();
-         logger.LogInformation("Starting Attachment Expiry Notification Service");
- 
-         try
-         {
-             // Run the notification service
-             var notificationService = host.Services.GetRequiredService<IAttachmentExpiryNotificationService>();
-             await notificationService.SendExpiryNotificationsAsync();
-                 
-             logger.LogInformation("Completed sending notifications successfully");
-         }
-         catch (Exception ex)
-         {
-             logger.LogError(ex, "An error occurred while sending notifications");
-         }
-         
-         
-         */
+
+
