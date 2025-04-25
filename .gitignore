@@ -70,6 +70,10 @@ appsettings.json
 appsettings.Development.json
 dotnet-ipcom-pim-console/appsettings.json
 dotnet-ipcom-pim-console/appsettings.Development.json
+
+**/bin/**/appsettings.json
+**/obj/**/appsettings.json
+
 #appsettings.*.json
 #appsettings.example.json
 *.pfx
