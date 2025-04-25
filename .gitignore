@@ -71,8 +71,9 @@ appsettings.Development.json
 dotnet-ipcom-pim-console/appsettings.json
 dotnet-ipcom-pim-console/appsettings.Development.json
 
-**/bin/**/appsettings.json
-**/obj/**/appsettings.json
+# ignore all appsettings.json variants
+**/appsettings.json
+**/appsettings.Development.json
 
 #appsettings.*.json
 #appsettings.example.json
