@@ -68,6 +68,7 @@ ipch/
 # Configuration files that may contain sensitive information
 appsettings.json
 appsettings.Development.json
+dotnet-ipcom-pim-console/appsettings.json
 #appsettings.*.json
 #appsettings.example.json
 *.pfx
