@@ -100,6 +100,12 @@ namespace dotnet_ipcom_pim_console.Services
             List<AttachmentDTO> lightRedAttachments,
             List<AttachmentDTO> redAttachments)
         {
+            int totalExpiringAttachments = lightOrangeAttachments.Count + 
+                                           deepOrangeAttachments.Count + 
+                                           lightRedAttachments.Count + 
+                                           redAttachments.Count;
+
+            
             var body = @"
             <!DOCTYPE html>
             <html>
@@ -119,7 +125,8 @@ namespace dotnet_ipcom_pim_console.Services
             <body>
                 <h1>IPCOM PIM - Attachments Expiring Soon</h1>
                 <p>This is an automated notification about attachments that will expire soon.</p>";
-
+//                // Add total count of expiring attachments
+                body += $"<p>Total attachments expiring soon: {totalExpiringAttachments}</p>";
             // Add red attachments (highest priority)
             if (redAttachments.Any())
             {
@@ -231,7 +238,7 @@ namespace dotnet_ipcom_pim_console.Services
                 {
                     body += $@"
                     <tr class='light-orange'>
-                        <td>{attachment.Products.Any()}</td>
+                        <td>{attachment.Products.FirstOrDefault()?.Name}</td>
                         <td>{attachment.Name}</td>
 <td>
 {
@@ -247,7 +254,10 @@ namespace dotnet_ipcom_pim_console.Services
 
             body += @"
                 <p>Please review these attachments and take appropriate action.</p>
-                <p>This is an automated message from the IPCOM PIM system.</p>
+                <p>This is an automated message from the IPCOM attachments PIM system.</p>
+
+                <p>Best regards,</p>
+                <p>And take actions</p>
             </body>
             </html>";
 

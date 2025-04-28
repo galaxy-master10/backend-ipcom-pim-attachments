@@ -156,11 +156,17 @@ public class AttachmentRepository : IAttachmentRepository
     
     public async Task<List<AttachmentDTO>> GetAttachmentsForConsoleAppAsync()
     {
+        var today = DateTime.Today;
+        var fourWeeksFromNow = today.AddDays(28);
+        
         var query = _context.Attachments
             .Include(a => a.Products)
             .Include(a => a.AttachmentCategories)
             .ThenInclude(ac => ac.Translations)
             .AsSplitQuery()
+            .Where(a => a.ExpiryDate.HasValue && 
+                        a.ExpiryDate.Value >= DateOnly.FromDateTime(today) && 
+                        a.ExpiryDate.Value <= DateOnly.FromDateTime(fourWeeksFromNow))
             .AsQueryable();
 
         var attachments = await query
