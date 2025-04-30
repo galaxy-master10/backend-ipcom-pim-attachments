@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("dotnet-ipcom-pim-shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1bae33b7476cf594394af51d172b6064e2bf6863")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+66f36b930577c93d5bf1a38a0b15a795fdb7cd84")]
 [assembly: System.Reflection.AssemblyProductAttribute("dotnet-ipcom-pim-shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("dotnet-ipcom-pim-shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

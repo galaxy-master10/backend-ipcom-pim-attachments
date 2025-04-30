@@ -185,7 +185,8 @@ public class AttachmentRepository : IAttachmentRepository
                 {
                     Id = p.Id,
                     Name = p.Name
-                }).ToList(),
+                })
+                .ToList(),
                 CategoryNames = a.AttachmentCategories.Select(ac =>
                     // For each category, choose a translation for "Name" matching the attachment's language,
                     // otherwise take the first available translation.

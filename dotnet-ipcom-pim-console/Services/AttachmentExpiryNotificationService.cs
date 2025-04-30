@@ -104,6 +104,9 @@ namespace dotnet_ipcom_pim_console.Services
                                            deepOrangeAttachments.Count + 
                                            lightRedAttachments.Count + 
                                            redAttachments.Count;
+            
+            var baseProductUrl = "https://pim.ipcomdigital.eu/Products/Details/";
+
 
             
             var body = @"
@@ -144,7 +147,9 @@ namespace dotnet_ipcom_pim_console.Services
                 {
                     body += $@"
                     <tr class='red'>
-                          <td>{attachment.Products.FirstOrDefault()?.Name}</td>
+                           <td>{(attachment.Products.FirstOrDefault()?.Id != null ? 
+        $"<a href='{baseProductUrl}{attachment.Products.FirstOrDefault()?.Id}'>{attachment.Products.FirstOrDefault()?.Name}</a>" : 
+        string.Empty)}</td>
                         <td>{attachment.Name}</td>
 <td>
 {
@@ -240,6 +245,7 @@ namespace dotnet_ipcom_pim_console.Services
                     <tr class='light-orange'>
                         <td>{attachment.Products.FirstOrDefault()?.Name}</td>
                         <td>{attachment.Name}</td>
+                      
 <td>
 {
     attachment.CategoryNames.FirstOrDefault()
