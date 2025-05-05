@@ -16,11 +16,41 @@ public class AttachmentRepository : IAttachmentRepository
         _context = context;
     }
     
-    public async Task<Attachment?> GetAttachmentByIdAsync(Guid id)
+    public async Task<AttachmentDTO?> GetAttachmentByIdAsync(Guid id)
     {
-        return await _context.Attachments
-            .Include(a=>a.Products)
-           .FirstOrDefaultAsync(a => a.Id == id);
+        var attachment = await _context.Attachments
+            .Include(a => a.Products)
+            .Include(a => a.AttachmentCategories)
+            .ThenInclude(ac => ac.Translations)
+            .AsSplitQuery()
+            .FirstOrDefaultAsync(a => a.Id == id);
+
+        return attachment == null ? null : new AttachmentDTO
+        {
+            Id = attachment.Id,
+            Name = attachment.Name,
+            LanguageCode = attachment.LanguageCode,
+            Published = attachment.Published,
+            Index = attachment.Index,
+            NoResize = attachment.NoResize,
+            Size = attachment.Size,
+            ExpiryDate = attachment.ExpiryDate,
+            Products = attachment.Products.Select(p => new ProductDTO
+            {
+                Id = p.Id,
+                Name = p.Name
+            }).ToList(),
+            CategoryNames = attachment.AttachmentCategories.Select(ac =>
+                ac.Translations
+                    .Where(t => t.Property == "Name" && t.LanguageCode == attachment.LanguageCode)
+                    .Select(t => t.LanguageTranslation)
+                    .FirstOrDefault()
+                ?? ac.Translations
+                    .Where(t => t.Property == "Name")
+                    .Select(t => t.LanguageTranslation)
+                    .FirstOrDefault()
+            ).Where(name => name != null).ToList()!
+        };
     }
     public async Task<(List<AttachmentDTO> Attachments, int TotalCount, int ExpiringWithin7Days, int ExpiringWithin30Days)> GetAttachmentsAsync(
         AttachmentFilterDTO filter, int page = 1, int pageSize = 10)

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("dotnet-ipcom-pim-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a5d0818fcb00d2966aa30623c696fdf33e970eb5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7095c3cd4df5759ab16ac265758d3aa84f1b630a")]
 [assembly: System.Reflection.AssemblyProductAttribute("dotnet-ipcom-pim-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("dotnet-ipcom-pim-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

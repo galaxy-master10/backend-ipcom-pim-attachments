@@ -19,7 +19,7 @@ public class AttachmentService : IAttachmetService
         _attachmentFilterValidator = attachmentFilterValidator;
     }
     
-    public async Task<Attachment> GetAttachmetByIdAsync(Guid id)
+    public async Task<AttachmentDTO> GetAttachmetByIdAsync(Guid id)
     {
         if (id == null)
         {
