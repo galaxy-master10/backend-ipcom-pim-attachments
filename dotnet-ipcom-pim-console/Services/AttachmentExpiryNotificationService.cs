@@ -128,6 +128,7 @@ namespace dotnet_ipcom_pim_console.Services
             <body>
                 <h1>IPCOM PIM - Attachments Expiring Soon</h1>
                 <p>This is an automated notification about attachments that will expire soon.</p>";
+            
 //                // Add total count of expiring attachments
                 body += $"<p>Total attachments expiring soon: {totalExpiringAttachments}</p>";
             // Add red attachments (highest priority)
@@ -145,19 +146,17 @@ namespace dotnet_ipcom_pim_console.Services
 
                 foreach (var attachment in redAttachments)
                 {
+                    var product = attachment.Products.FirstOrDefault();
                     body += $@"
-                    <tr class='red'>
-                           <td>{(attachment.Products.FirstOrDefault()?.Id != null ? 
-        $"<a href='{baseProductUrl}{attachment.Products.FirstOrDefault()?.Id}'>{attachment.Products.FirstOrDefault()?.Name}</a>" : 
-        string.Empty)}</td>
-                        <td>{attachment.Name}</td>
-<td>
-{
-  attachment.CategoryNames.FirstOrDefault()
-}
- </td>
-                        <td>{attachment.ExpiryDate:yyyy-MM-dd}</td>
-                    </tr>";
+    <tr class='red'>
+        <td>{(product?.Id != null ? 
+            $"<a href='{baseProductUrl}{product.Id}'>{product.Name ?? product.Id.ToString()}</a>" : 
+            string.Empty)}</td>
+        <td>{attachment.Name}</td>
+        <td>{attachment.CategoryNames.FirstOrDefault()}</td>
+        <td>{attachment.ExpiryDate:yyyy-MM-dd}</td>
+    </tr>";
+                    // here 
                 }
 
                 body += "</table>";
@@ -178,9 +177,12 @@ namespace dotnet_ipcom_pim_console.Services
 
                 foreach (var attachment in lightRedAttachments)
                 {
+                    var product = attachment.Products.FirstOrDefault();
                     body += $@"
-                    <tr class='light-red'>
-                              <td>{attachment.Products.FirstOrDefault()?.Name}</td>
+    <tr class='red'>
+        <td>{(product?.Id != null ? 
+            $"<a href='{baseProductUrl}{product.Id}'>{product.Name ?? product.Id.ToString()}</a>" : 
+            string.Empty)}</td>
 
                         <td>{attachment.Name}</td>
 <td>
@@ -210,9 +212,12 @@ namespace dotnet_ipcom_pim_console.Services
 
                 foreach (var attachment in deepOrangeAttachments)
                 {
+                    var product = attachment.Products.FirstOrDefault();
                     body += $@"
-                    <tr class='deep-orange'>
-        <td>{attachment.Products.FirstOrDefault()?.Name}</td>
+    <tr class='red'>
+        <td>{(product?.Id != null ? 
+            $"<a href='{baseProductUrl}{product.Id}'>{product.Name ?? product.Id.ToString()}</a>" : 
+            string.Empty)}</td>
                         <td>{attachment.Name}</td>
 <td>
 {
@@ -241,9 +246,12 @@ namespace dotnet_ipcom_pim_console.Services
 
                 foreach (var attachment in lightOrangeAttachments)
                 {
+                    var product = attachment.Products.FirstOrDefault();
                     body += $@"
-                    <tr class='light-orange'>
-                        <td>{attachment.Products.FirstOrDefault()?.Name}</td>
+    <tr class='red'>
+        <td>{(product?.Id != null ? 
+            $"<a href='{baseProductUrl}{product.Id}'>{product.Name ?? product.Id.ToString()}</a>" : 
+            string.Empty)}</td>
                         <td>{attachment.Name}</td>
                       
 <td>
