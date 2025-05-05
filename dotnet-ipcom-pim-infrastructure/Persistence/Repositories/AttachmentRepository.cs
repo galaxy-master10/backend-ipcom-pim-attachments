@@ -16,7 +16,7 @@ public class AttachmentRepository : IAttachmentRepository
         _context = context;
     }
     
-    public async Task<AttachmentDTO?> GetAttachmentByIdAsync(Guid id)
+    public async Task<AttachmentDTOForById?> GetAttachmentByIdAsync(Guid id)
     {
         var attachment = await _context.Attachments
             .Include(a => a.Products)
@@ -25,7 +25,7 @@ public class AttachmentRepository : IAttachmentRepository
             .AsSplitQuery()
             .FirstOrDefaultAsync(a => a.Id == id);
 
-        return attachment == null ? null : new AttachmentDTO
+        return attachment == null ? null : new AttachmentDTOForById
         {
             Id = attachment.Id,
             Name = attachment.Name,
@@ -35,6 +35,8 @@ public class AttachmentRepository : IAttachmentRepository
             NoResize = attachment.NoResize,
             Size = attachment.Size,
             ExpiryDate = attachment.ExpiryDate,
+            Md5 = attachment.Md5,
+            Content = attachment.Content,
             Products = attachment.Products.Select(p => new ProductDTO
             {
                 Id = p.Id,

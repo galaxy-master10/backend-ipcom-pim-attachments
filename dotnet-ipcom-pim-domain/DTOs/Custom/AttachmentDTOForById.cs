@@ -1,6 +1,6 @@
 ﻿namespace dotnet_ipcom_pim_domain.DTOs.Custom;
 
-public class AttachmentDTO
+public class AttachmentDTOForById
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;
@@ -13,5 +13,7 @@ public class AttachmentDTO
     public List<ProductDTO> Products { get; set; } = new();
     public List<string> CategoryNames { get; set; } = new();
     
+    public byte[]? Md5 { get; set; } // New column
 
+    public byte[]? Content { get; set; } // New column
 }

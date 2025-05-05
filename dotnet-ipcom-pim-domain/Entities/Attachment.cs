@@ -29,4 +29,8 @@ public partial class Attachment
     public List<string> CategoryNames { get; set; } = new List<string>();
     public virtual ICollection<AttachmentCategory> AttachmentCategories { get; set; }
         = new List<AttachmentCategory>();
+    
+    public byte[]? Md5 { get; set; } // New column
+
+    public byte[]? Content { get; set; } // New column
 }
