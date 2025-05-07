@@ -12,6 +12,6 @@ public class AttachmentDTO
     public DateOnly? ExpiryDate { get; set; }
     public List<ProductDTO> Products { get; set; } = new();
     public List<string> CategoryNames { get; set; } = new();
-    
+    public List<string> CountryNames { get; set; } = new();
 
 }

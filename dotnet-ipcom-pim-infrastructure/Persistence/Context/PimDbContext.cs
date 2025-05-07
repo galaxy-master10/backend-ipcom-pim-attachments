@@ -29,7 +29,6 @@ public partial class PimDbContext : DbContext
                 .HasMaxLength(2)
                 .IsUnicode(false)
                 .IsFixedLength();
-         //   entity.Property(e => e.Md5).HasColumnName("MD5");
          
          entity
              .HasMany(a => a.AttachmentCategories)
@@ -51,6 +50,30 @@ public partial class PimDbContext : DbContext
                  {
                      j.HasKey("Attachment_Id", "AttachmentCategory_Id");
                      j.ToTable("AttachmentsXAttachmentCategories");
+                 }
+             );
+         
+         entity
+             .HasMany(a => a.Countries)
+             .WithMany(c => c.Attachments)
+             .UsingEntity<Dictionary<string, object>>(
+                 "AttachmentsXCountries",
+                 r => r
+                     .HasOne<AttachmentCountry>()
+                     .WithMany()
+                     .HasForeignKey("Country_Id")
+                     .HasConstraintName("FK_AttachmentsXCountries_Country")
+                     .OnDelete(DeleteBehavior.ClientSetNull),
+                 l => l
+                     .HasOne<Attachment>()
+                     .WithMany()
+                     .HasForeignKey("Attachment_Id")
+                     .HasConstraintName("FK_AttachmentsXCountries_Attachment")
+                     .OnDelete(DeleteBehavior.ClientSetNull),
+                 j =>
+                 {
+                     j.HasKey("Attachment_Id", "Country_Id");
+                     j.ToTable("AttachmentsXCountries");
                  }
              );
          
@@ -123,6 +146,15 @@ public partial class PimDbContext : DbContext
                     });
         });
 
+        modelBuilder.Entity<AttachmentCountry>(entity =>
+        {
+            entity.ToTable("Countries");
+
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Name).HasMaxLength(50);
+        });
+        
         OnModelCreatingPartial(modelBuilder);
     }
 

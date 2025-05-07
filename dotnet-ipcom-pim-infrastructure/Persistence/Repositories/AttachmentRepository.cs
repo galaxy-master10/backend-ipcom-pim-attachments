@@ -20,6 +20,7 @@ public class AttachmentRepository : IAttachmentRepository
     {
         var attachment = await _context.Attachments
             .Include(a => a.Products)
+            .Include(a => a.Countries)
             .Include(a => a.AttachmentCategories)
             .ThenInclude(ac => ac.Translations)
             .AsSplitQuery()
@@ -37,6 +38,7 @@ public class AttachmentRepository : IAttachmentRepository
             ExpiryDate = attachment.ExpiryDate,
             Md5 = attachment.Md5,
             Content = attachment.Content,
+            CountryNames = attachment.Countries.Select(c => c.Name).ToList(),
             Products = attachment.Products.Select(p => new ProductDTO
             {
                 Id = p.Id,
@@ -165,6 +167,8 @@ public class AttachmentRepository : IAttachmentRepository
                     Id = p.Id,
                     Name = p.Name
                 }).ToList(),
+                CountryNames = a.Countries.Select(
+                c => c.Name).ToList(),
                 CategoryNames = a.AttachmentCategories.Select(ac =>
                     // For each category, choose a translation for "Name" matching the attachment's language,
                     // otherwise take the first available translation.

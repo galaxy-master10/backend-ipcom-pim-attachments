@@ -16,4 +16,5 @@ public class AttachmentDTOForById
     public byte[]? Md5 { get; set; } // New column
 
     public byte[]? Content { get; set; } // New column
+    public List<string> CountryNames { get; set; } = new();
 }
