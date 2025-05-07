@@ -241,10 +241,16 @@ public class AttachmentRepository : IAttachmentRepository
 
         return attachments;
     }
-    
 
+    public Task<List<AttachmentCountry>> GetAllAttachmentsCountries()
+    {
+        return _context.AttachmentCountries.ToListAsync();
+    }
 
-
-
-    
+    public Task<List<AttachmentCategory>> GetAllAttachmentsCategories()
+    {
+        return _context.AttachmentCategories
+            .Include(ac => ac.Translations)
+            .ToListAsync();
+    }
 }

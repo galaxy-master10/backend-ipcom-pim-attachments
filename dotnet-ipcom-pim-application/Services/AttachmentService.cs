@@ -45,4 +45,14 @@ public class AttachmentService : IAttachmetService
             totalCount, 
             expiringWithin7Days, 
             expiringWithin30Days);    }
+
+    public Task<List<AttachmentCountry>> GetAllAttachmentsCountries()
+    {
+        return _attachmentRepository.GetAllAttachmentsCountries();
+    }
+
+    public Task<List<AttachmentCategory>> GetAllAttachmentsCategories()
+    {
+        return _attachmentRepository.GetAllAttachmentsCategories();
+    }
 }

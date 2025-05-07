@@ -216,6 +216,22 @@ attachmentsGroup.MapGet("/{id}", async (Guid id, IAttachmetService attachmentSer
     .WithOpenApi()
     .Produces<Attachment>(200);
 
+attachmentsGroup.MapGet("/countries", async (IAttachmetService attachmentService) =>
+{
+    var countries = await attachmentService.GetAllAttachmentsCountries();
+    if (countries == null)
+        return Results.NotFound("No countries found.");
+    return Results.Ok(countries);
+});
+
+attachmentsGroup.MapGet("/categories", async (IAttachmetService attachmentService) =>
+{
+    var categories = await attachmentService.GetAllAttachmentsCategories();
+    if (categories == null)
+        return Results.NotFound("No categories found.");
+    return Results.Ok(categories);
+});
+
 
 
 //--------------------------------------------------------

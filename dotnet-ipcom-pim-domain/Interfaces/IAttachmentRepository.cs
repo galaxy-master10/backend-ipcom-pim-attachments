@@ -9,5 +9,7 @@ public interface IAttachmentRepository
     Task<AttachmentDTOForById?> GetAttachmentByIdAsync(Guid id);
     Task<(List<AttachmentDTO> Attachments, int TotalCount, int ExpiringWithin7Days, int ExpiringWithin30Days)> GetAttachmentsAsync(AttachmentFilterDTO attachmentFilterDto, int page = 1, int pageSize = 10);
     Task<List<AttachmentDTO>> GetAttachmentsForConsoleAppAsync();
+    Task<List<AttachmentCountry>> GetAllAttachmentsCountries();
+    Task<List<AttachmentCategory>> GetAllAttachmentsCategories();
     
 }

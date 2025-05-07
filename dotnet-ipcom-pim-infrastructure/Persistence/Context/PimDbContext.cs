@@ -14,6 +14,10 @@ public partial class PimDbContext : DbContext
     public virtual DbSet<Attachment> Attachments { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
+    
+    public virtual DbSet<AttachmentCategory> AttachmentCategories { get; set; }
+    public virtual DbSet<AttachmentCountry> AttachmentCountries { get; set; }
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -153,6 +157,9 @@ public partial class PimDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.CountryCode)
+                .HasMaxLength(2)
+                .IsFixedLength();
         });
         
         OnModelCreatingPartial(modelBuilder);
