@@ -253,4 +253,71 @@ public class AttachmentRepository : IAttachmentRepository
             .Include(ac => ac.Translations)
             .ToListAsync();
     }
+
+    public Task<bool> UpdateAttachmentAsync(AttachmentDTOForById attachmentDto)
+    {
+        
+        var attachment =
+         _context.Attachments
+            .Include(a => a.Products)
+            .Include(a => a.Countries)
+            .Include(a => a.AttachmentCategories)
+            .ThenInclude(ac => ac.Translations)
+            .FirstOrDefault(a => a.Id == attachmentDto.Id);
+        
+        if (attachment == null)
+        {
+            return Task.FromResult(false);
+        }
+        
+        attachment.Name = attachmentDto.Name;
+        attachment.LanguageCode = attachmentDto.LanguageCode;
+        attachment.Published = attachmentDto.Published;
+        attachment.Index = attachmentDto.Index;
+        attachment.NoResize = attachmentDto.NoResize;
+        attachment.Size = attachmentDto.Size;
+        attachment.ExpiryDate = attachmentDto.ExpiryDate;
+        attachment.Md5 = attachmentDto.Md5;
+        attachment.Content = attachmentDto.Content;
+        
+        attachment.Countries.Clear();
+        foreach (var countryName in attachmentDto.CountryNames)
+        {
+            var country = _context.AttachmentCountries
+                .FirstOrDefault(c => c.Name == countryName);
+            if (country != null)
+            {
+                attachment.Countries.Add(country);
+            }
+        }
+        
+        attachment.AttachmentCategories.Clear();
+        foreach (var categoryName in attachmentDto.CategoryNames)
+        {
+            var category = _context.AttachmentCategories
+                .Include(ac => ac.Translations)
+                .FirstOrDefault(ac =>
+                    ac.Translations.Any(t => t.LanguageTranslation == categoryName));
+            if (category != null)
+            {
+                attachment.AttachmentCategories.Add(category);
+            }
+        }
+        
+        _context.Attachments.Update(attachment);
+        
+        return _context.SaveChangesAsync()
+            .ContinueWith(task =>
+            {
+                if (task.IsCompletedSuccessfully)
+                {
+                    return true;
+                }
+                else
+                {
+                    // Handle the error as needed
+                    return false;
+                }
+            });
+    }
 }

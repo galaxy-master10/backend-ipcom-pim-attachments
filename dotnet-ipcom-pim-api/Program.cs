@@ -7,6 +7,7 @@ using dotnet_ipcom_pim_application.Validators.Filters;
 using dotnet_ipcom_pim_attachments.Interfaces;
 using dotnet_ipcom_pim_attachments.Middlewares;
 using dotnet_ipcom_pim_attachments.Services;
+using dotnet_ipcom_pim_domain.DTOs.Custom;
 using dotnet_ipcom_pim_domain.DTOs.Filters;
 using dotnet_ipcom_pim_domain.Entities;
 using dotnet_ipcom_pim_domain.Interfaces;
@@ -216,13 +217,21 @@ attachmentsGroup.MapGet("/{id}", async (Guid id, IAttachmetService attachmentSer
     .WithOpenApi()
     .Produces<Attachment>(200);
 
-attachmentsGroup.MapGet("/countries", async (IAttachmetService attachmentService) =>
-{
-    var countries = await attachmentService.GetAllAttachmentsCountries();
-    if (countries == null)
-        return Results.NotFound("No countries found.");
-    return Results.Ok(countries);
-});
+
+
+// update attachment
+attachmentsGroup.MapPut("/{id}",
+    async (Guid id, AttachmentDTOForById attachmentDto, IAttachmetService attachmentService) =>
+    {
+        if (attachmentDto == null)
+            return Results.BadRequest("Attachment data is required.");
+
+        var updated = await attachmentService.UpdateAttachmentAsync(attachmentDto);
+        if (!updated)
+            return Results.NotFound("Attachment not found.");
+
+        return Results.Ok("Attachment updated successfully.");
+    });
 
 attachmentsGroup.MapGet("/categories", async (IAttachmetService attachmentService) =>
 {
@@ -232,6 +241,25 @@ attachmentsGroup.MapGet("/categories", async (IAttachmetService attachmentServic
     return Results.Ok(categories);
 });
 
+
+//--------------------------------------------------------
+// Countries api endpoints
+//--------------------------------------------------------
+
+
+
+
+var countriesGroup = app.MapGroup("/api/Countries")
+    .WithTags("Countries")
+    .WithDescription("Endpoints for managing Countries");
+
+countriesGroup.MapGet("", async (IAttachmetService attachmentService) =>
+{
+    var countries = await attachmentService.GetAllAttachmentsCountries();
+    if (countries == null)
+        return Results.NotFound("No countries found.");
+    return Results.Ok(countries);
+});
 
 
 //--------------------------------------------------------

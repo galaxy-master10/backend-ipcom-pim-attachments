@@ -55,4 +55,14 @@ public class AttachmentService : IAttachmetService
     {
         return _attachmentRepository.GetAllAttachmentsCategories();
     }
+
+    public Task<bool> UpdateAttachmentAsync(AttachmentDTOForById attachmentDto)
+    {
+        if (attachmentDto == null)
+        {
+            return Task.FromResult(false);
+        }
+        
+        return _attachmentRepository.UpdateAttachmentAsync(attachmentDto);
+    }
 }
