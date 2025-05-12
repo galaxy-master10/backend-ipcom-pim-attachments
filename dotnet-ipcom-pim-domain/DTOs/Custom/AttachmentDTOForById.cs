@@ -13,8 +13,8 @@ public class AttachmentDTOForById
     public List<ProductDTO> Products { get; set; } = new();
     public List<string> CategoryNames { get; set; } = new();
     
-    public byte[]? Md5 { get; set; } // New column
+    public byte[]? Md5 { get; set; }
 
-    public byte[]? Content { get; set; } // New column
+    public byte[]? Content { get; set; } 
     public List<string> CountryNames { get; set; } = new();
 }

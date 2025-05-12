@@ -12,8 +12,8 @@ public interface IAttachmentRepository
     Task<List<AttachmentCountry>> GetAllAttachmentsCountries();
     Task<List<AttachmentCategory>> GetAllAttachmentsCategories();
     
-    // update attachment
-    
     Task<bool> UpdateAttachmentAsync(AttachmentDTOForById attachmentDto);
+    
+    Task<List<Language>> GetAllLanguages();
     
 }

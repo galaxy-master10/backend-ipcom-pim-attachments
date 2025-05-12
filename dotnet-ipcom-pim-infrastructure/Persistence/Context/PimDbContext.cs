@@ -17,6 +17,8 @@ public partial class PimDbContext : DbContext
     
     public virtual DbSet<AttachmentCategory> AttachmentCategories { get; set; }
     public virtual DbSet<AttachmentCountry> AttachmentCountries { get; set; }
+    
+    public virtual DbSet<Language> Languages { get; set; }
 
 
 
@@ -91,21 +93,14 @@ public partial class PimDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).ValueGeneratedNever();
 
-            // Relationship to Translations
-            // We will rely on a condition that "TranslatableId" matches the category's Id
-            // and possibly also "Property = 'Name'". 
-            // Because your schema is used for many translatable entities,
-            // we can do a filtered Include or a condition in queries.
-
-            // If you want a direct relationship, you can do:
+            
             entity
                 .HasMany(ac => ac.Translations)
                 .WithOne(t => t.AttachmentCategory!)
                 .HasForeignKey(t => t.TranslatableId)
                 .HasConstraintName("FK_Translations_AttachmentCategories")
                 .OnDelete(DeleteBehavior.ClientSetNull);
-
-            // (We typically also store which 'Property' the translation is for.)
+            
         });
       
         modelBuilder.Entity<Translation>(entity =>
@@ -158,6 +153,18 @@ public partial class PimDbContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.CountryCode)
+                .HasMaxLength(2)
+                .IsFixedLength();
+        });
+        
+        modelBuilder.Entity<Language>(entity =>
+        {
+            entity.ToTable("Languages");
+
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.ISOCode)
                 .HasMaxLength(2)
                 .IsFixedLength();
         });

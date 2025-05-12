@@ -131,7 +131,7 @@ public class AttachmentRepository : IAttachmentRepository
         
         var totalCount = await query.CountAsync();
         
-        // Calculate expiring attachments counts
+
         var today = DateTime.Today;
         var sevenDaysFromNow = today.AddDays(7);
         var thirtyDaysFromNow = today.AddDays(30);
@@ -315,9 +315,15 @@ public class AttachmentRepository : IAttachmentRepository
                 }
                 else
                 {
-                    // Handle the error as needed
+               
                     return false;
                 }
             });
+    }
+
+    public Task<List<Language>> GetAllLanguages()
+    {
+        return _context.Languages
+            .ToListAsync();
     }
 }

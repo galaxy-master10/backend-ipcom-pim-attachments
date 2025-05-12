@@ -13,4 +13,6 @@ public interface IAttachmetService
     Task<List<AttachmentCategory>> GetAllAttachmentsCategories();
     // update attachment
     Task<bool> UpdateAttachmentAsync(AttachmentDTOForById attachmentDto);
+    
+    Task<List<Language>> GetAllLanguages();
 }

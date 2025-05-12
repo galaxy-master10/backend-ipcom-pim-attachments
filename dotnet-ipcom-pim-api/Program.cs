@@ -219,7 +219,7 @@ attachmentsGroup.MapGet("/{id}", async (Guid id, IAttachmetService attachmentSer
 
 
 
-// update attachment
+
 attachmentsGroup.MapPut("/{id}",
     async (Guid id, AttachmentDTOForById attachmentDto, IAttachmetService attachmentService) =>
     {
@@ -241,24 +241,20 @@ attachmentsGroup.MapGet("/categories", async (IAttachmetService attachmentServic
     return Results.Ok(categories);
 });
 
-
-//--------------------------------------------------------
-// Countries api endpoints
-//--------------------------------------------------------
-
-
-
-
-var countriesGroup = app.MapGroup("/api/Countries")
-    .WithTags("Countries")
-    .WithDescription("Endpoints for managing Countries");
-
-countriesGroup.MapGet("", async (IAttachmetService attachmentService) =>
+attachmentsGroup.MapGet("/countries", async (IAttachmetService attachmentService) =>
 {
     var countries = await attachmentService.GetAllAttachmentsCountries();
     if (countries == null)
         return Results.NotFound("No countries found.");
     return Results.Ok(countries);
+});
+
+attachmentsGroup.MapGet("/languages", async (IAttachmetService attachmentService) =>
+{
+    var languages = await attachmentService.GetAllLanguages();
+    if (languages == null)
+        return Results.NotFound("No languages found.");
+    return Results.Ok(languages);
 });
 
 

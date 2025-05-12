@@ -65,4 +65,9 @@ public class AttachmentService : IAttachmetService
         
         return _attachmentRepository.UpdateAttachmentAsync(attachmentDto);
     }
+
+    public Task<List<Language>> GetAllLanguages()
+    {
+        return _attachmentRepository.GetAllLanguages();
+    }
 }
