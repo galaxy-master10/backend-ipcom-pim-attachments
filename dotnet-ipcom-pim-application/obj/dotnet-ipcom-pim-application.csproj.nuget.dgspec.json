@@ -13,13 +13,20 @@
         "packagesPath": "C:\\Users\\SayidaliJama\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\SayidaliJama\\projects\\dotnet-ipcom-pim-attachments\\dotnet-ipcom-pim-attachments\\dotnet-ipcom-pim-application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\SayidaliJama\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\SayidaliJama\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -79,13 +86,20 @@
         "packagesPath": "C:\\Users\\SayidaliJama\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\SayidaliJama\\projects\\dotnet-ipcom-pim-attachments\\dotnet-ipcom-pim-attachments\\dotnet-ipcom-pim-domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\SayidaliJama\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\SayidaliJama\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -138,13 +152,20 @@
         "packagesPath": "C:\\Users\\SayidaliJama\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\SayidaliJama\\projects\\dotnet-ipcom-pim-attachments\\dotnet-ipcom-pim-attachments\\dotnet-ipcom-pim-shared\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\SayidaliJama\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\SayidaliJama\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
