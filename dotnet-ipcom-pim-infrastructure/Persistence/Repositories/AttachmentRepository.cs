@@ -242,9 +242,9 @@ public class AttachmentRepository : IAttachmentRepository
         return attachments;
     }
 
-    public Task<List<AttachmentCountry>> GetAllAttachmentsCountries()
+    public Task<List<Country>> GetAllAttachmentsCountries()
     {
-        return _context.AttachmentCountries.ToListAsync();
+        return _context.Countries.ToListAsync();
     }
 
     public Task<List<AttachmentCategory>> GetAllAttachmentsCategories()
@@ -283,7 +283,7 @@ public class AttachmentRepository : IAttachmentRepository
         attachment.Countries.Clear();
         foreach (var countryName in attachmentDto.CountryNames)
         {
-            var country = _context.AttachmentCountries
+            var country = _context.Countries
                 .FirstOrDefault(c => c.Name == countryName);
             if (country != null)
             {

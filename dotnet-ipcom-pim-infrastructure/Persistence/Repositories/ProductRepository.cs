@@ -17,9 +17,67 @@ public class ProductRepository : IProductRepository
     
     public async Task<Product?> GetProductByIdAsync(Guid id)
     {
+       /*
+        var product = await _context.Products
+            .FirstOrDefaultAsync(p => p.Id == id);
+    
+        if (product == null)
+            return null;
+
+        // Now load related entities using explicit loading
+        // Load immediate relationships
+        await _context.Entry(product)
+            .Collection(p => p.Attachments)
+            .LoadAsync();
+        
+        await _context.Entry(product)
+            .Collection(p => p.Brands)
+            .LoadAsync();
+        
+        await _context.Entry(product)
+            .Collection(p => p.ProductCodes)
+            .LoadAsync();
+        
+        await _context.Entry(product)
+            .Collection(p => p.ProductCharacteristics)
+            .LoadAsync();
+    
+        // Optionally load more relationships if needed
+        await _context.Entry(product)
+            .Collection(p => p.CompetenceCenters)
+            .LoadAsync();
+        
+        await _context.Entry(product)
+            .Collection(p => p.Countries)
+            .LoadAsync();
+    
+        return product;
+        */
+      
         return await _context.Products
             .Include(p => p.Attachments)
+            .Include(p => p.Brands)
+            .Include(p => p.CompetenceCenters)
+            .Include(p => p.Countries)
+            .Include(p => p.CountryLanguages)
+            .ThenInclude(cl => cl.Country)
+            .Include(p => p.CountryLanguages)
+            .ThenInclude(cl => cl.Language)
+            .Include(p => p.Locations)
+            .Include(p => p.References)
+            .Include(p => p.ProductCodes)
+            .Include(p => p.ProductCharacteristics)
+            .Include(p => p.ProductGroups)
+            .Include(p => p.Taxonomy2s)
+            .Include(p => p.Taxonomy3s)
+            .Include(p => p.Taxonomy4s)
+            .Include(p => p.Taxonomy5s)
+            .Include(p => p.Taxonomy6s)
             .FirstOrDefaultAsync(p => p.Id == id);
+     
+      
+   //   return await _context.Products.FindAsync(id);
+        
     }
     
     public async Task<(List<Product> Products, int TotalCount)> GetProductsAsync(

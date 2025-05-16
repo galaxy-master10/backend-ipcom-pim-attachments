@@ -53,8 +53,8 @@ if (!string.IsNullOrEmpty(keyVaultUri))
 }
 
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  //  .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -175,9 +175,9 @@ app.UseCors("AllowVueApp");
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<ApiKeyMiddleware>();
+//app.UseMiddleware<ApiKeyMiddleware>();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 
 //--------------------------------------------------------

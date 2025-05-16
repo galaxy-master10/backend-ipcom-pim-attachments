@@ -9,7 +9,7 @@ public interface IAttachmetService
 {
     Task<AttachmentDTOForById> GetAttachmetByIdAsync(Guid id);
   Task<PaginatedResponse<AttachmentDTO>> GetAttachmentsAsync(AttachmentFilterDTO attachmentFilterDto, int page=1, int pageSize=10);
-  Task<List<AttachmentCountry>> GetAllAttachmentsCountries();
+  Task<List<Country>> GetAllAttachmentsCountries();
     Task<List<AttachmentCategory>> GetAllAttachmentsCategories();
     // update attachment
     Task<bool> UpdateAttachmentAsync(AttachmentDTOForById attachmentDto);

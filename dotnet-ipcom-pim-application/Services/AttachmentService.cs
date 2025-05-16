@@ -46,7 +46,7 @@ public class AttachmentService : IAttachmetService
             expiringWithin7Days, 
             expiringWithin30Days);    }
 
-    public Task<List<AttachmentCountry>> GetAllAttachmentsCountries()
+    public Task<List<Country>> GetAllAttachmentsCountries()
     {
         return _attachmentRepository.GetAllAttachmentsCountries();
     }
