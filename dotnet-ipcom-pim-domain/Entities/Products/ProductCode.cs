@@ -8,4 +8,6 @@ public class ProductCode
     public Guid Product_Id { get; set; }
     
     public virtual Product Product { get; set; } = null!;
+    public ICollection<ProductCharacteristic> ProductCharacteristics { get; set; } = new List<ProductCharacteristic>();
+
 }

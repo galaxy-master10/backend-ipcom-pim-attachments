@@ -28,4 +28,5 @@ public class ProductCharacteristic
     
     public virtual Product Product { get; set; } = null!;
     public virtual ProductCode ProductCode { get; set; } = null!;
+    
 }

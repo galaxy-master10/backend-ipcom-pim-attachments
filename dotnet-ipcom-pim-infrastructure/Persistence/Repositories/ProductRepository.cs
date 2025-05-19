@@ -57,7 +57,7 @@ public class ProductRepository : IProductRepository
         return await _context.Products
             .Include(p => p.Attachments)
             .Include(p => p.Brands)
-            .Include(p => p.CompetenceCenters)
+            /*.Include(p => p.CompetenceCenters)
             .Include(p => p.Countries)
             .Include(p => p.CountryLanguages)
             .ThenInclude(cl => cl.Country)
@@ -66,13 +66,14 @@ public class ProductRepository : IProductRepository
             .Include(p => p.Locations)
             .Include(p => p.References)
             .Include(p => p.ProductCodes)
-            .Include(p => p.ProductCharacteristics)
+         
             .Include(p => p.ProductGroups)
             .Include(p => p.Taxonomy2s)
             .Include(p => p.Taxonomy3s)
             .Include(p => p.Taxonomy4s)
             .Include(p => p.Taxonomy5s)
-            .Include(p => p.Taxonomy6s)
+            .Include(p => p.Taxonomy6s)*/
+            .Include(p => p.ProductCharacteristics)
             .FirstOrDefaultAsync(p => p.Id == id);
      
       
