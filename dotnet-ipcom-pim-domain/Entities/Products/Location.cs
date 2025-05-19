@@ -19,7 +19,7 @@ public class Location
     public DateTime? LastModifiedOn { get; set; }
     public int? LocationTypeId { get; set; }
     
-    public virtual ICollection<Product> Products { get; set; } = new List<Product>();
-    public virtual ICollection<Attachment> Attachments { get; set; } = new List<Attachment>();
+ public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+
 
 }

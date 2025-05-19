@@ -16,7 +16,7 @@ public class ProductDTO
     public ICollection<CompetenceCenterDTO>? CompetenceCenters { get; set; }
     public ICollection<CountryDTO>? Countries { get; set; }
     public ICollection<CountryLanguageDTO>? CountryLanguages { get; set; }
-    public ICollection<LocationDTO>? Locations { get; set; }
+//    public ICollection<LocationDTO>? Locations { get; set; }
     public ICollection<ReferenceDTO>? References { get; set; }
     public ICollection<ProductCodeDTO>? ProductCodes { get; set; }
     public ICollection<ProductCharacteristicDTO>? ProductCharacteristics { get; set; }

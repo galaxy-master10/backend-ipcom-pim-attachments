@@ -35,7 +35,7 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.UseCollation("Latin1_General_CI_AS");
-
+            
             //
             // Attachments ↔ AttachmentCategories
             //
@@ -170,25 +170,25 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                         join.HasKey("CountryLanguage_Id", "Product_Id");
                     });
 
-            //
+            
             // Products ↔ Locations
-            //
             modelBuilder.Entity<Product>()
-                .HasMany(p => p.Locations).WithMany(l => l.Products)
+                .HasMany(p => p.Locations).WithMany(l => l.Products) // Uncomment Products in Location entity
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXLocations",
                     right => right.HasOne<Location>().WithMany()
-                                  .HasForeignKey("Location_Id")               // ← column renamed
-                                  .OnDelete(DeleteBehavior.ClientSetNull),
-                    left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
-                                  .OnDelete(DeleteBehavior.ClientSetNull),
-                    join  =>
+                        .HasForeignKey("Location_Id") // Make sure this matches table column
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    left => left.HasOne<Product>().WithMany()
+                        .HasForeignKey("Product_Id") // Make sure this matches table column
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    join =>
                     {
                         join.ToTable("ProductsXLocations");
-                        join.HasKey("Location_Id", "Product_Id");
+                        join.HasKey("Product_Id", "Location_Id"); // Ensure correct order based on DB
                     });
-
+            
+            
             //
             // Products ↔ References
             //
@@ -321,6 +321,46 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                         join.ToTable("ProductsXTaxonomy6");
                         join.HasKey("Product_Id", "Taxonomy6_Id");
                     });
+            
+            //
+// CompetenceCenter ↔ Taxonomy1
+//
+            modelBuilder.Entity<CompetenceCenter>()
+                .HasMany(cc => cc.Taxonomy1s).WithMany(t1 => t1.CompetenceCenters)
+                .UsingEntity<Dictionary<string, object>>(
+                    "Taxonomy1XCompetenceCenters",
+                    right => right.HasOne<Taxonomy1>().WithMany()
+                        .HasForeignKey("Taxonomy_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    left => left.HasOne<CompetenceCenter>().WithMany()
+                        .HasForeignKey("CompetenceCenter_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    join =>
+                    {
+                        join.ToTable("Taxonomy1XCompetenceCenters");
+                        join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
+                    });
+
+//
+// CompetenceCenter ↔ Taxonomy2
+//
+            modelBuilder.Entity<CompetenceCenter>()
+                .HasMany(cc => cc.Taxonomy2s).WithMany(t2 => t2.CompetenceCenters)
+                .UsingEntity<Dictionary<string, object>>(
+                    "Taxonomy2XCompetenceCenters",
+                    right => right.HasOne<Taxonomy2>().WithMany()
+                        .HasForeignKey("Taxonomy_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    left => left.HasOne<CompetenceCenter>().WithMany()
+                        .HasForeignKey("CompetenceCenter_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    join =>
+                    {
+                        join.ToTable("Taxonomy2XCompetenceCenters");
+                        join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
+                    });
+
+// Repeat the pattern for Taxonomy3-6
 
             //
             // CompetenceCenter ↔ CountryLanguage
@@ -560,6 +600,8 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                       .HasMaxLength(2)
                       .IsFixedLength();
             });
+            
+            
 
             OnModelCreatingPartial(modelBuilder);
         }

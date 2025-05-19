@@ -30,8 +30,12 @@ public partial class Attachment
     public virtual ICollection<AttachmentCategory> AttachmentCategories { get; set; }
         = new List<AttachmentCategory>();
     
+    
+
+
     public virtual ICollection<Country> Countries { get; set; } 
         = new List<Country>();
+    
     
     public byte[]? Md5 { get; set; } 
 
