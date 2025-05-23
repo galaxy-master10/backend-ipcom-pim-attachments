@@ -45,12 +45,11 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .HasMany(a => a.AttachmentCategories).WithMany(c => c.Attachments)
                 .UsingEntity<Dictionary<string, object>>(
                     "AttachmentsXAttachmentCategories",
-                    // — changed FK property names to match table columns:
                     right => right.HasOne<AttachmentCategory>().WithMany()
-                                  .HasForeignKey("AttachmentCategory_Id")      // ← column renamed
+                                  .HasForeignKey("AttachmentCategory_Id")
                                   .OnDelete(DeleteBehavior.Cascade),
                     left  => left .HasOne<Attachment>().WithMany()
-                                  .HasForeignKey("Attachment_Id")              // ← column renamed
+                                  .HasForeignKey("Attachment_Id")
                                   .OnDelete(DeleteBehavior.Cascade),
                     join  =>
                     {
@@ -66,19 +65,16 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "AttachmentsXCountries",
                     right => right.HasOne<Country>().WithMany()
-                                  .HasForeignKey("Country_Id")                // ← column renamed
+                                  .HasForeignKey("Country_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Attachment>().WithMany()
-                                  .HasForeignKey("Attachment_Id")             // ← column renamed
+                                  .HasForeignKey("Attachment_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
                         join.ToTable("AttachmentsXCountries");
                         join.HasKey("Attachment_Id", "Country_Id");
                     });
-            
-            
-            
 
             //
             // Products ↔ Attachments
@@ -88,10 +84,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXAttachments",
                     right => right.HasOne<Attachment>().WithMany()
-                                  .HasForeignKey("Attachment_Id")             // ← column renamed
+                                  .HasForeignKey("Attachment_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -107,10 +103,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXBrands",
                     right => right.HasOne<Brand>().WithMany()
-                                  .HasForeignKey("Brand_Id")                  // ← column renamed
+                                  .HasForeignKey("Brand_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -126,10 +122,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXCompetenceCenters",
                     right => right.HasOne<CompetenceCenter>().WithMany()
-                                  .HasForeignKey("CompetenceCenter_Id")        // ← column renamed
+                                  .HasForeignKey("CompetenceCenter_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -145,10 +141,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXCountries",
                     right => right.HasOne<Country>().WithMany()
-                                  .HasForeignKey("Country_Id")                // ← column renamed
+                                  .HasForeignKey("Country_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -164,10 +160,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXCountryLanguages",
                     right => right.HasOne<CountryLanguage>().WithMany()
-                                  .HasForeignKey("CountryLanguage_Id")        // ← column renamed
+                                  .HasForeignKey("CountryLanguage_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -175,25 +171,23 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                         join.HasKey("CountryLanguage_Id", "Product_Id");
                     });
 
-            
             // Products ↔ Locations
             modelBuilder.Entity<Product>()
-                .HasMany(p => p.Locations).WithMany(l => l.Products) // Uncomment Products in Location entity
+                .HasMany(p => p.Locations).WithMany(l => l.Products)
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXLocations",
                     right => right.HasOne<Location>().WithMany()
-                        .HasForeignKey("Location_Id") // Make sure this matches table column
+                        .HasForeignKey("Location_Id")
                         .OnDelete(DeleteBehavior.ClientSetNull),
                     left => left.HasOne<Product>().WithMany()
-                        .HasForeignKey("Product_Id") // Make sure this matches table column
+                        .HasForeignKey("Product_Id")
                         .OnDelete(DeleteBehavior.ClientSetNull),
                     join =>
                     {
                         join.ToTable("ProductsXLocations");
-                        join.HasKey("Product_Id", "Location_Id"); // Ensure correct order based on DB
+                        join.HasKey("Product_Id", "Location_Id");
                     });
-            
-            
+
             //
             // Products ↔ References
             //
@@ -202,10 +196,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXReferences",
                     right => right.HasOne<Reference>().WithMany()
-                                  .HasForeignKey("Reference_Id")              // ← column renamed
+                                  .HasForeignKey("Reference_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -221,10 +215,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXProductGroups",
                     right => right.HasOne<Taxonomy1>().WithMany()
-                                  .HasForeignKey("Taxonomy1_Id")               // ← column renamed
+                                  .HasForeignKey("Taxonomy1_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -240,10 +234,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXTaxonomy2",
                     right => right.HasOne<Taxonomy2>().WithMany()
-                                  .HasForeignKey("Taxonomy2_Id")               // ← column renamed
+                                  .HasForeignKey("Taxonomy2_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -259,10 +253,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXTaxonomy3",
                     right => right.HasOne<Taxonomy3>().WithMany()
-                                  .HasForeignKey("Taxonomy3_Id")               // ← column renamed
+                                  .HasForeignKey("Taxonomy3_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -278,10 +272,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXTaxonomy4",
                     right => right.HasOne<Taxonomy4>().WithMany()
-                                  .HasForeignKey("Taxonomy4_Id")               // ← column renamed
+                                  .HasForeignKey("Taxonomy4_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -297,10 +291,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXTaxonomy5",
                     right => right.HasOne<Taxonomy5>().WithMany()
-                                  .HasForeignKey("Taxonomy5_Id")               // ← column renamed
+                                  .HasForeignKey("Taxonomy5_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -316,10 +310,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "ProductsXTaxonomy6",
                     right => right.HasOne<Taxonomy6>().WithMany()
-                                  .HasForeignKey("Taxonomy6_Id")               // ← column renamed
+                                  .HasForeignKey("Taxonomy6_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     left  => left .HasOne<Product>().WithMany()
-                                  .HasForeignKey("Product_Id")                // ← column renamed
+                                  .HasForeignKey("Product_Id")
                                   .OnDelete(DeleteBehavior.ClientSetNull),
                     join  =>
                     {
@@ -328,8 +322,8 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                     });
             
             //
-// CompetenceCenter ↔ Taxonomy1
-//
+            // CompetenceCenter ↔ Taxonomy1
+            //
             modelBuilder.Entity<CompetenceCenter>()
                 .HasMany(cc => cc.Taxonomy1s).WithMany(t1 => t1.CompetenceCenters)
                 .UsingEntity<Dictionary<string, object>>(
@@ -346,9 +340,9 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                         join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
                     });
 
-//
-// CompetenceCenter ↔ Taxonomy2
-//
+            //
+            // CompetenceCenter ↔ Taxonomy2
+            //
             modelBuilder.Entity<CompetenceCenter>()
                 .HasMany(cc => cc.Taxonomy2s).WithMany(t2 => t2.CompetenceCenters)
                 .UsingEntity<Dictionary<string, object>>(
@@ -413,7 +407,6 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                         join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
                     });
 
-
             modelBuilder.Entity<CompetenceCenter>()
                 .HasMany(cc => cc.Taxonomy6s).WithMany(t6 => t6.CompetenceCenters)
                 .UsingEntity<Dictionary<string, object>>(
@@ -430,7 +423,6 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                         join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
                     });
 
-
             //
             // CompetenceCenter ↔ CountryLanguage
             //
@@ -439,10 +431,10 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                 .UsingEntity<Dictionary<string, object>>(
                     "CompetenceCentersXCountryLanguages",
                     right => right.HasOne<CountryLanguage>().WithMany()
-                                  .HasForeignKey("CountryLanguage_Id")        // ← column renamed
+                                  .HasForeignKey("CountryLanguage_Id")
                                   .OnDelete(DeleteBehavior.Cascade),
                     left  => left .HasOne<CompetenceCenter>().WithMany()
-                                  .HasForeignKey("CompetenceCenter_Id")        // ← column renamed
+                                  .HasForeignKey("CompetenceCenter_Id")
                                   .OnDelete(DeleteBehavior.Cascade),
                     join  =>
                     {
@@ -450,9 +442,6 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                         join.HasKey("CompetenceCenter_Id", "CountryLanguage_Id");
                     });
 
-         
-
-         
             //
             // One-to-many: ProductCodes
             //
@@ -670,7 +659,8 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                       .IsFixedLength();
             });
             
-            // ⬅️ ADDITION: Translation entity mapping
+            //
+            // Translation entity mapping
             //
             modelBuilder.Entity<Translation>(entity =>
             {
@@ -688,10 +678,27 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                     .IsRequired();
                 entity.Property(t => t.TranslatableId)
                     .HasColumnName("TranslatableId");
-                // no .HasOne() or .HasForeignKey() anywhere
-                
+                    
+                // Add index for performance
+                entity.HasIndex(t => new { t.TranslatableId, t.Property, t.LanguageCode })
+                    .HasDatabaseName("TRANSLATION_UNIQUE")
+                    .IsUnique();
             });
 
+            // IMPORTANT: Configure entities to ignore Translations navigation property
+            // This prevents EF Core from trying to create foreign keys for the polymorphic relationship
+            modelBuilder.Entity<AttachmentCategory>()
+                .Ignore(ac => ac.Translations);
+                
+            // If Product entity has Translations navigation property, ignore it too
+            modelBuilder.Entity<Product>()
+                .Ignore(p => p.Translations);
+                
+            // Add similar ignore statements for any other entities that have Translations
+            // Check your entity classes and add as needed:
+            // modelBuilder.Entity<Taxonomy1>().Ignore(t => t.Translations);
+            // modelBuilder.Entity<Taxonomy2>().Ignore(t => t.Translations);
+            // etc.
 
             OnModelCreatingPartial(modelBuilder);
         }
