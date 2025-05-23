@@ -176,9 +176,9 @@ app.UseCors("AllowVueApp");
 
 app.UseHttpsRedirection();
 
-//app.UseMiddleware<ApiKeyMiddleware>();
+app.UseMiddleware<ApiKeyMiddleware>();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 
 //--------------------------------------------------------
