@@ -52,9 +52,8 @@ if (!string.IsNullOrEmpty(keyVaultUri))
     });
 }
 
-
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-  //  .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -89,7 +88,9 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddSingleton<IApiKeyService, InMemoryApiKeyService>();
 
 builder.Services.AddDbContext<PimDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+        .EnableSensitiveDataLogging()
+        .LogTo(Console.WriteLine, LogLevel.Information));
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();

@@ -17,70 +17,70 @@ public class ProductRepository : IProductRepository
     
     public async Task<Product?> GetProductByIdAsync(Guid id)
     {
-       /*
-        var product = await _context.Products
-            .FirstOrDefaultAsync(p => p.Id == id);
-    
-        if (product == null)
-            return null;
-
-        // Now load related entities using explicit loading
-        // Load immediate relationships
-        await _context.Entry(product)
-            .Collection(p => p.Attachments)
-            .LoadAsync();
-        
-        await _context.Entry(product)
-            .Collection(p => p.Brands)
-            .LoadAsync();
-        
-        await _context.Entry(product)
-            .Collection(p => p.ProductCodes)
-            .LoadAsync();
-        
-        await _context.Entry(product)
-            .Collection(p => p.ProductCharacteristics)
-            .LoadAsync();
-    
-        // Optionally load more relationships if needed
-        await _context.Entry(product)
-            .Collection(p => p.CompetenceCenters)
-            .LoadAsync();
-        
-        await _context.Entry(product)
-            .Collection(p => p.Countries)
-            .LoadAsync();
-    
-        return product;
-        */
-      
-        return await _context.Products
-            .Include(p => p.Attachments)
-            .Include(p => p.Brands)
-            .Include(p => p.CompetenceCenters)
-            .Include(p => p.Countries)
-            .Include(p => p.CountryLanguages)
-            .ThenInclude(cl => cl.Country)
-            .Include(p => p.CountryLanguages)
-            .ThenInclude(cl => cl.Language)
-            .Include(p => p.Locations)
-            .Include(p => p.References)
-            .Include(p => p.ProductCodes)
-         
-            .Include(p => p.ProductGroups)
-            .Include(p => p.Taxonomy2s)
-            .Include(p => p.Taxonomy3s)
-            .Include(p => p.Taxonomy4s)
-            .Include(p => p.Taxonomy5s)
-            .Include(p => p.Taxonomy6s)
-            .Include(p => p.ProductCharacteristics)
-            .AsSplitQuery()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(p => p.Id == id);
      
       
-   //   return await _context.Products.FindAsync(id);
-        
+      // 1) Load product + all related entities
+    var product = await _context.Products
+        .Include(p => p.Attachments)
+        .Include(p => p.Brands)
+        .Include(p => p.CompetenceCenters)
+        .Include(p => p.Countries)
+        .Include(p => p.CountryLanguages).ThenInclude(cl => cl.Country)
+        .Include(p => p.CountryLanguages).ThenInclude(cl => cl.Language)
+        .Include(p => p.Locations)
+        .Include(p => p.References)
+        .Include(p => p.ProductCodes)
+        .Include(p => p.ProductCharacteristics)
+        .Include(p => p.ProductGroups)
+        .Include(p => p.Taxonomy2s)
+        .Include(p => p.Taxonomy3s)
+        .Include(p => p.Taxonomy4s)
+        .Include(p => p.Taxonomy5s)
+        .Include(p => p.Taxonomy6s)
+        .AsSplitQuery()
+        .AsNoTracking()
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+    if (product == null)
+        return null;
+
+    // ⬅️ ADDITION: gather all the IDs that could have translations
+    var allTranslatableIds = new List<Guid> { product.Id };
+    //allTranslatableIds.AddRange(product.Attachments.Select(a => a.Id));
+    allTranslatableIds.AddRange(product.Brands.Select(b => b.Id));
+    allTranslatableIds.AddRange(product.CompetenceCenters.Select(cc => cc.Id)); 
+    allTranslatableIds.AddRange(product.Countries.Select(c => c.Id));
+    allTranslatableIds.AddRange(product.Locations.Select(l => l.Id));
+    allTranslatableIds.AddRange(product.References.Select(r => r.Id));
+    allTranslatableIds.AddRange(product.ProductCodes.Select(pc => pc.Id));
+    allTranslatableIds.AddRange(product.ProductCharacteristics.Select(ch => ch.Id));
+    allTranslatableIds.AddRange(product.ProductGroups.Select(t1 => t1.Id));
+    allTranslatableIds.AddRange(product.Taxonomy2s.Select(t2 => t2.Id));
+    allTranslatableIds.AddRange(product.Taxonomy3s.Select(t3 => t3.Id));
+    allTranslatableIds.AddRange(product.Taxonomy4s.Select(t4 => t4.Id));
+    allTranslatableIds.AddRange(product.Taxonomy5s.Select(t5 => t5.Id));
+    allTranslatableIds.AddRange(product.Taxonomy6s.Select(t6 => t6.Id));
+
+    
+// Fix the translation query by being explicit about the columns
+        var productTranslations = await _context.Translations
+            .AsNoTracking()
+            .Where(t => t.TranslatableId == product.Id)
+            .Select(t => new Translation {
+                Id = t.Id,
+                LanguageCode = t.LanguageCode,
+                LanguageTranslation = t.LanguageTranslation,
+                Property = t.Property,
+                TranslatableId = t.TranslatableId
+            })
+            .ToListAsync();
+
+// attach
+    product.Translations = productTranslations;
+    
+
+    return product;
+     
     }
     
     public async Task<(List<Product> Products, int TotalCount)> GetProductsAsync(

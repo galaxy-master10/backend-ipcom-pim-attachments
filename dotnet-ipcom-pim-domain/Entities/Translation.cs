@@ -11,5 +11,4 @@ public partial class Translation
     
     public Guid TranslatableId { get; set; }
     
-    public virtual AttachmentCategory? AttachmentCategory { get; set; }
 }

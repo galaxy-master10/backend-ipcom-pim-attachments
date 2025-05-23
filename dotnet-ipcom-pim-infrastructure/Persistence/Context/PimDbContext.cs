@@ -31,6 +31,8 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
         public DbSet<Taxonomy5> Taxonomy5 { get; set; } = null!;
         public DbSet<Taxonomy6> Taxonomy6 { get; set; } = null!;
         public DbSet<Country> Countries { get; set; } = null!;
+        public DbSet<Translation> Translations { get; set; } = null!;  
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,6 +76,9 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                         join.ToTable("AttachmentsXCountries");
                         join.HasKey("Attachment_Id", "Country_Id");
                     });
+            
+            
+            
 
             //
             // Products ↔ Attachments
@@ -360,7 +365,71 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                         join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
                     });
 
-// Repeat the pattern for Taxonomy3-6
+            modelBuilder.Entity<CompetenceCenter>()
+                .HasMany(cc => cc.Taxonomy3s).WithMany(t3 => t3.CompetenceCenters)
+                .UsingEntity<Dictionary<string, object>>(
+                    "Taxonomy3XCompetenceCenters",
+                    right => right.HasOne<Taxonomy3>().WithMany()
+                        .HasForeignKey("Taxonomy_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    left => left.HasOne<CompetenceCenter>().WithMany()
+                        .HasForeignKey("CompetenceCenter_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    join =>
+                    {
+                        join.ToTable("Taxonomy3XCompetenceCenters");
+                        join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
+                    });
+            
+            modelBuilder.Entity<CompetenceCenter>()
+                .HasMany(cc => cc.Taxonomy4s).WithMany(t4 => t4.CompetenceCenters)
+                .UsingEntity<Dictionary<string, object>>(
+                    "Taxonomy4XCompetenceCenters",
+                    right => right.HasOne<Taxonomy4>().WithMany()
+                        .HasForeignKey("Taxonomy_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    left => left.HasOne<CompetenceCenter>().WithMany()
+                        .HasForeignKey("CompetenceCenter_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    join =>
+                    {
+                        join.ToTable("Taxonomy4XCompetenceCenters");
+                        join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
+                    });
+            
+            modelBuilder.Entity<CompetenceCenter>()
+                .HasMany(cc => cc.Taxonomy5s).WithMany(t5 => t5.CompetenceCenters)
+                .UsingEntity<Dictionary<string, object>>(
+                    "Taxonomy5XCompetenceCenters",
+                    right => right.HasOne<Taxonomy5>().WithMany()
+                        .HasForeignKey("Taxonomy_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    left => left.HasOne<CompetenceCenter>().WithMany()
+                        .HasForeignKey("CompetenceCenter_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    join =>
+                    {
+                        join.ToTable("Taxonomy5XCompetenceCenters");
+                        join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
+                    });
+
+
+            modelBuilder.Entity<CompetenceCenter>()
+                .HasMany(cc => cc.Taxonomy6s).WithMany(t6 => t6.CompetenceCenters)
+                .UsingEntity<Dictionary<string, object>>(
+                    "Taxonomy6XCompetenceCenters",
+                    right => right.HasOne<Taxonomy6>().WithMany()
+                        .HasForeignKey("Taxonomy_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    left => left.HasOne<CompetenceCenter>().WithMany()
+                        .HasForeignKey("CompetenceCenter_Id")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    join =>
+                    {
+                        join.ToTable("Taxonomy6XCompetenceCenters");
+                        join.HasKey("CompetenceCenter_Id", "Taxonomy_Id");
+                    });
+
 
             //
             // CompetenceCenter ↔ CountryLanguage
@@ -601,7 +670,28 @@ namespace dotnet_ipcom_pim_infrastructure.Persistence.Context
                       .IsFixedLength();
             });
             
-            
+            // ⬅️ ADDITION: Translation entity mapping
+            //
+            modelBuilder.Entity<Translation>(entity =>
+            {
+                entity.ToTable("Translations");
+                entity.HasKey(t => t.Id);
+                entity.Property(t => t.Id).ValueGeneratedNever();
+                entity.Property(t => t.LanguageCode)
+                    .HasMaxLength(2)
+                    .IsFixedLength()
+                    .IsRequired();
+                entity.Property(t => t.Property)
+                    .HasMaxLength(50)
+                    .IsRequired();
+                entity.Property(t => t.LanguageTranslation)
+                    .IsRequired();
+                entity.Property(t => t.TranslatableId)
+                    .HasColumnName("TranslatableId");
+                // no .HasOne() or .HasForeignKey() anywhere
+                
+            });
+
 
             OnModelCreatingPartial(modelBuilder);
         }

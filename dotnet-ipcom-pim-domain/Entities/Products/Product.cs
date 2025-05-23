@@ -38,4 +38,7 @@ public partial class Product
     public virtual ICollection<Taxonomy6> Taxonomy6s { get; set; } = new List<Taxonomy6>();
  
     
+    public virtual ICollection<Translation> Translations { get; set; }
+        = new List<Translation>();
+    
 }
